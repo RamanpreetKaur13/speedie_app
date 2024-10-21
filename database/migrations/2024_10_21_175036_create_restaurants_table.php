@@ -57,7 +57,7 @@ return new class extends Migration
             // $table->string('bank_details')->nullable();                // Bank Details (for payouts)
             $table->enum('status', ['active', 'inactive'])->default('active'); // Restaurant Status
             $table->boolean('featured')->default(false);               // Featured Status
-            // $table->string('tax_id')->nullable();                      // Tax ID/GST Number
+            $table->string('tax_gst_number')->nullable();                      // Tax ID/GST Number
             $table->string('business_license')->nullable();            // Business License Number
             // $table->text('special_instructions')->nullable();          // Special Instructions (optional)
             $table->timestamps();
