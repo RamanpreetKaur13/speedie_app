@@ -17,7 +17,8 @@ class RestrauntController extends Controller
      */
     public function index()
     {
-        return view('admin.restraunts.index');
+        $restaurants = Restaurant::all();
+        return view('admin.restraunts.index', compact('restaurants'));
     }
 
     /**
@@ -28,107 +29,25 @@ class RestrauntController extends Controller
         return view('admin.restraunts.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    // public function store(Request $request)
-    // {
-    //     try {
-    //         $data = [];
-    //         if ($request->hasFile('logo')) {
-    //             $data['logo'] = store_image('logo', 'app/public/restraunt/images/');
-    //         }
-    //         dd($data);
-    //         // $data['homepage_section_id'] = $request->homepage_section_id;
-    //         // $data['link_url'] = $request->link_url;
-    //         // $data['alt_text'] = $request->alt_text;
-    //         // $data['display_order'] = $request->display_order;
-    //         // $data['status'] =1;
-
-    //         // Banner::create($data);
-    //         return redirect()->route('admin.banners.index')->with('success', 'Banners created successfully');
-    //     } catch (Exception $e) {
-    //         return redirect()->back()->with('error', 'Something went Wrong! Please Try Again.' . $e->getMessage());
-    //     }
-    // }
-
 
     // public function store(Request $request)
-    // {
-    //     try {
-    //         // $request->validate([
-    //         //     'name' => 'required|string|max:255',
-    //         //     'description' => 'required',
-    //         //     'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //         //     'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //         //     'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-    //         // ]);
-
-    //         // $data = $request->except(['logo', 'featured_image', 'images']);
-
-    //         // Handle logo upload
-    //         if ($request->hasFile('logo')) {
-    //             $logoSizes = [
-    //                 'small' => [150, 150],
-    //                 'medium' => [300, 300]
-    //             ];
-    //             $data['logo'] = store_image('logo', 'restaurants/logos', $logoSizes);
-    //         }
-
-    //         // // Handle featured image
-    //         // if ($request->hasFile('featured_image')) {
-    //         //     $featuredSizes = [
-    //         //         'small' => [400, 300],
-    //         //         'medium' => [800, 600],
-    //         //         'large' => [1200, 900]
-    //         //     ];
-    //         //     $data['featured_image'] = store_image('featured_image', 'restaurants/featured', $featuredSizes);
-    //         // }
-
-    //         // Handle multiple images
-    //         // if ($request->hasFile('images')) {
-    //         //     $gallerySizes = [
-    //         //         'thumbnail' => [200, 150],
-    //         //         'medium' => [600, 450],
-    //         //         'large' => [1024, 768]
-    //         //     ];
-
-    //         //     $galleryImages = [];
-    //         //     foreach ($request->file('images') as $index => $image) {
-    //         //         $imagePaths = store_image('images.' . $index, 'restaurants/gallery', $gallerySizes);
-    //         //         $galleryImages[] = $imagePaths;
-    //         //     }
-    //         //     $data['images'] = json_encode($galleryImages);
-    //         // }
-
-    //         // $restaurant = Restaurant::create($data);
-
-    //         // return redirect()
-    //         //     ->route('admin.restaurants.index')
-    //         //     ->with('success', 'Restaurant created successfully');
-
-    //     } catch (Exception $e) {
-    //         Log::error('Restaurant creation failed: ' . $e->getMessage());
-    //         return redirect()
-    //             ->back()
-    //             ->withInput()
-    //             ->with('error', 'Failed to create restaurant: ' . $e->getMessage());
-    //     }
-    // }
-
-
     public function store(RestaurantRequest $request)
     {
         try {
             // Store images
-            $logoFilename = store_image($request->file('logo'), 'restaurants/logos');
-            $restaurantImage = store_image($request->file('restraunt_images'), 'restaurants/images');
-            $featuredImage = store_image($request->file('featured_img'), 'restaurants/featured');
+            try {
+                // $logoFilename = store_image($request->file('logo'), 'restaurants/logos');
+                $restaurantImage = store_image($request->file('restaurant_images'), 'restaurants/images');
+                $featuredImage = store_image($request->file('featured_image'), 'restaurants/featured');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Failed to upload image: ' . $e->getMessage());
+            }
 
 
             $restaurant = Restaurant::create([
                 'name' => $request->name,
                 'description' => $request->description,
+                'speciality' => $request->speciality,
                 'address' => $request->address,
                 'city' => $request->city,
                 'state' => $request->state,
@@ -147,14 +66,16 @@ class RestrauntController extends Controller
                 'opening_time' => $request->opening_time,
                 'closing_time' => $request->closing_time,
                 'days_of_operation' => $request->days_of_operation,
+                'delivery_fee' => $request->delivery_fee,
+                'delivery_time' => $request->delivery_time,
+                'average_cost_for_per_person' => $request->average_cost_for_per_person,
                 'tax_gst_number' => $request->tax_gst_number,
                 'business_license' => $request->business_license,
-                'logo' => $logoFilename,
-                'restaurant_image' => $restaurantImage,
+                // 'logo' => $logoFilename,
+                'restaurant_images' => $restaurantImage,
                 'featured_image' => $featuredImage,
             ]);
 
-            dd($restaurant);
             // Check if request is API
             if ($request->expectsJson() || $request->is('api/*')) {
                 return response()->json([
@@ -162,7 +83,7 @@ class RestrauntController extends Controller
                     'message' => 'Restaurant created successfully',
                     'data' => $restaurant,
                     'images' => [
-                        'logo' => asset("storage/restaurants/logos/{$logoFilename}"),
+                        // 'logo' => asset("storage/restaurants/logos/{$logoFilename}"),
                         'restaurant_image' => asset("storage/restaurants/images/{$restaurantImage}"),
                         'featured_image' => asset("storage/restaurants/featured/{$featuredImage}")
                     ]
@@ -174,14 +95,14 @@ class RestrauntController extends Controller
             //     ->route('restaurants.index')
             //     ->with('success', 'Restaurant created successfully');
 
-            return redirect()->back()->with('success', 'Restaurant created successfully');
+            return redirect()->route('admin.restaurants.index')->with('success', 'Restaurant created successfully');
         } catch (\Exception $e) {
             // Delete uploaded images if restaurant creation fails
-            delete_image($logoFilename, 'restaurants/logos');
+            // delete_image($logoFilename, 'restaurants/logos');
             delete_image($restaurantImage, 'restaurants/images');
             delete_image($featuredImage, 'restaurants/featured');
 
-            if ($request->expectsJson()) {
+            if ($request->expectsJson()|| $request->is('api/*')) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Failed to create restaurant',
@@ -211,15 +132,93 @@ class RestrauntController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $restaurant = Restaurant::find($id);
+        return view('admin.restraunts.edit' , compact('restaurant'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(RestaurantRequest $request, Restaurant $restaurant)
     {
-        //
+
+        try {
+            $data = $request->validated();
+            // Handle image updates
+            if ($request->hasFile('restaurant_images')) {
+                try {
+                    // Delete old image
+                    delete_image($restaurant->restaurant_images, 'restaurants/images');
+                    // Store new image
+                    $data['restaurant_images'] = store_image($request->file('restaurant_images'), 'restaurants/images');
+                } catch (\Exception $e) {
+                    return redirect()->back()->with('error', 'Failed to upload restaurant image: ' . $e->getMessage());
+                }
+            } else {
+                // Keep existing image
+                unset($data['restaurant_images']);
+            }
+
+            if ($request->hasFile('featured_image')) {
+                try {
+                    // Delete old image
+                    delete_image($restaurant->featured_image, 'restaurants/featured');
+                    // Store new image
+                    $data['featured_image'] = store_image($request->file('featured_image'), 'restaurants/featured');
+                } catch (\Exception $e) {
+                    return redirect()->back()->with('error', 'Failed to upload featured image: ' . $e->getMessage());
+                }
+            } else {
+                // Keep existing image
+                unset($data['featured_image']);
+            }
+
+            // Update restaurant
+            $restaurant->update($data);
+
+            // Prepare response data
+            $responseData = [
+                'restaurant' => $restaurant,
+                'images' => [
+                    'restaurant_image' => asset("storage/restaurants/images/{$restaurant->restaurant_images}"),
+                    'featured_image' => asset("storage/restaurants/featured/{$restaurant->featured_image}")
+                ]
+            ];
+
+            // Check if request is API
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Restaurant updated successfully',
+                    'data' => $responseData
+                ], 200);
+            }
+
+            // Web response
+            return redirect()->route('admin.restaurants.index')->with('success', 'Restaurant updated successfully');
+
+        } catch (\Exception $e) {
+            // Rollback any new images if update fails
+            if (isset($data['restaurant_images']) && $data['restaurant_images'] !== $restaurant->restaurant_images) {
+                delete_image($data['restaurant_images'], 'restaurants/images');
+            }
+            if (isset($data['featured_image']) && $data['featured_image'] !== $restaurant->featured_image) {
+                delete_image($data['featured_image'], 'restaurants/featured');
+            }
+
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Failed to update restaurant',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Failed to update restaurant: ' . $e->getMessage());
+        }
     }
 
     /**

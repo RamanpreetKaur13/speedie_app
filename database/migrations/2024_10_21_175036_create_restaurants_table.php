@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');                         // Restaurant Name
             $table->text('description');                    // Restaurant Description
+            $table->string('speciality');                     // Cuisine speciality
             // $table->string('category');                     // Cuisine Category
             $table->string('logo')->nullable();             // Restaurant Logo
             $table->text('address');                      // Restaurant Address
@@ -29,16 +30,16 @@ return new class extends Migration
             $table->string('secondary_phone')->nullable();  // Secondary Phone
             $table->string('email')->unique();              // Restaurant Email
             $table->string('website')->nullable();          // Restaurant Website
-            $table->time('opening_time');                   // Opening Time
-            $table->time('closing_time');                   // Closing Time
-            $table->json('days_of_operation');              // Days of Operation
+            $table->string('opening_time');                   // Opening Time
+            $table->string('closing_time');                   // Closing Time
+            $table->string('days_of_operation');              // Days of Operation
             $table->string('owner_name');                   // Owner Name
             $table->string('owner_contact_number');         // Owner Contact Number
             $table->string('owner_email')->unique();        // Owner Email
             // $table->string('menu_categories')->nullable();  // Menu Categories
             // $table->string('menu_file')->nullable();        // Menu File (PDF/Image)
             // $table->string('menu_url')->nullable();         // Menu URL (optional)
-            // $table->decimal('average_cost_for_two', 8, 2);  // Average Cost for Two
+            $table->decimal('average_cost_for_per_person', 8, 2)->nullable();  // Average Cost for one
             // $table->decimal('service_charge', 8, 2)->nullable(); // Service Charge (if any)
             // $table->string('discounts_or_offers')->nullable();   // Discounts or Offers
             // $table->string('restaurant_type');              // Restaurant Type (Dine-in/Takeaway/Delivery)
@@ -49,9 +50,9 @@ return new class extends Migration
             // $table->boolean('halal')->default(false);                  // Halal/Kosher
             // $table->string('delivery_partner')->nullable();            // Delivery Partner Integration
             // $table->decimal('min_order_amount', 8, 2)->nullable();     // Minimum Order Amount
-            // $table->decimal('delivery_fee', 8, 2)->nullable();         // Delivery Fee
-            // $table->string('delivery_time')->nullable();               // Estimated Delivery Time
-            $table->string('images')->nullable();                      // Restaurant Images
+            $table->decimal('delivery_fee', 8, 2)->nullable();         // Delivery Fee
+            $table->string('delivery_time')->nullable();               // Estimated Delivery Time
+            $table->string('restaurant_images')->nullable();                      // Restaurant Images
             $table->string('featured_image')->nullable();              // Featured Image
             // $table->json('payment_methods')->nullable();               // Accepted Payment Methods
             // $table->string('bank_details')->nullable();                // Bank Details (for payouts)
