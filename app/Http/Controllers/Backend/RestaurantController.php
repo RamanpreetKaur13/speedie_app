@@ -7,10 +7,14 @@ use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Models\User;
 use App\Models\Restaurant;
 use App\Http\Requests\RestaurantRequest;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
-class RestrauntController extends Controller
+class RestaurantController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,6 +38,9 @@ class RestrauntController extends Controller
     public function store(RestaurantRequest $request)
     {
         try {
+              // Generate random password for restaurant owner
+              $password = generateStrongPassword(12);// 12 character random string
+
             // Store images
             try {
                 // $logoFilename = store_image($request->file('logo'), 'restaurants/logos');
@@ -59,6 +66,7 @@ class RestrauntController extends Controller
                 'phone' => $request->phone,
                 'secondary_phone' => $request->secondary_phone,
                 'email' => $request->email,
+                'password' => Hash::make($password),
                 'website' => $request->website,
                 'owner_name' => $request->owner_name,
                 'owner_contact_number' => $request->owner_contact_number,
@@ -74,6 +82,7 @@ class RestrauntController extends Controller
                 // 'logo' => $logoFilename,
                 'restaurant_images' => $restaurantImage,
                 'featured_image' => $featuredImage,
+                'role' => 'restaurant_owner'
             ]);
 
             // Check if request is API
@@ -118,6 +127,117 @@ class RestrauntController extends Controller
     }
 
 
+    // public function store(RestaurantRequest $request)
+    // {
+    //     try {
+    //         // Generate random password for restaurant owner
+    //         $password = Str::random(12); // 12 character random string
+
+    //         // Store images
+    //         try {
+    //             $restaurantImage = store_image($request->file('restaurant_images'), 'restaurants/images');
+    //             $featuredImage = store_image($request->file('featured_image'), 'restaurants/featured');
+    //         } catch (\Exception $e) {
+    //             return redirect()->back()->with('error', 'Failed to upload image: ' . $e->getMessage());
+    //         }
+
+    //         // Start database transaction
+    //         DB::beginTransaction();
+
+    //         // Create user account for restaurant owner
+    //         $user = User::create([
+    //             'name' => $request->name,
+    //             'email' => $request->email,
+    //             'password' => Hash::make($password),
+    //             'phone' => $request->phone,
+    //             'role' => 'restaurant_owner' // Assuming you have roles defined
+    //         ]);
+
+    //         $restaurant = Restaurant::create([
+    //             'name' => $request->name,
+    //             'description' => $request->description,
+    //             'speciality' => $request->speciality,
+    //             'address' => $request->address,
+    //             'city' => $request->city,
+    //             'state' => $request->state,
+    //             'postal_code' => $request->postal_code,
+    //             'country' => $request->country,
+    //             'delivery_radius' => $request->delivery_radius,
+    //             'latitude' => $request->latitude,
+    //             'longitude' => $request->longitude,
+    //             'phone' => $request->phone,
+    //             'secondary_phone' => $request->secondary_phone,
+    //             'email' => $request->email,
+    //             'website' => $request->website,
+    //             'owner_name' => $request->owner_name,
+    //             'owner_contact_number' => $request->owner_contact_number,
+    //             'owner_email' => $request->owner_email,
+    //             'opening_time' => $request->opening_time,
+    //             'closing_time' => $request->closing_time,
+    //             'days_of_operation' => $request->days_of_operation,
+    //             'delivery_fee' => $request->delivery_fee,
+    //             'delivery_time' => $request->delivery_time,
+    //             'average_cost_for_per_person' => $request->average_cost_for_per_person,
+    //             'tax_gst_number' => $request->tax_gst_number,
+    //             'business_license' => $request->business_license,
+    //             'restaurant_images' => $restaurantImage,
+    //             'featured_image' => $featuredImage,
+    //             'user_id' => $user->id // Link restaurant to user
+    //         ]);
+
+    //         // Commit transaction
+    //         DB::commit();
+
+    //         // Store credentials in session to display to admin
+    //         session(['restaurant_owner_credentials' => [
+    //             'email' => $user->email,
+    //             'password' => $password
+    //         ]]);
+
+    //         // Check if request is API
+    //         if ($request->expectsJson() || $request->is('api/*')) {
+    //             return response()->json([
+    //                 'status' => true,
+    //                 'message' => 'Restaurant created successfully',
+    //                 'data' => $restaurant,
+    //                 'owner_credentials' => [
+    //                     'email' => $user->email,
+    //                     'password' => $password
+    //                 ],
+    //                 'images' => [
+    //                     'restaurant_image' => asset("storage/restaurants/images/{$restaurantImage}"),
+    //                     'featured_image' => asset("storage/restaurants/featured/{$featuredImage}")
+    //                 ]
+    //             ], 201);
+    //         }
+
+    //         // Web response
+    //         return redirect()
+    //             ->route('admin.restaurants.index')
+    //             ->with('success', 'Restaurant created successfully. Owner credentials have been generated.');
+    //     } catch (\Exception $e) {
+    //         // Rollback transaction
+    //         DB::rollBack();
+
+    //         // Delete uploaded images if restaurant creation fails
+    //         delete_image($restaurantImage, 'restaurants/images');
+    //         delete_image($featuredImage, 'restaurants/featured');
+
+    //         if ($request->expectsJson() || $request->is('api/*')) {
+    //             return response()->json([
+    //                 'status' => false,
+    //                 'message' => 'Failed to create restaurant',
+    //                 'error' => $e->getMessage()
+    //             ], 500);
+    //         }
+
+    //         return redirect()
+    //             ->back()
+    //             ->withInput()
+    //             ->with('error', 'Failed to create restaurant: ' . $e->getMessage());
+    //     }
+    // }
+
 
     /**
      * Display the specified resource.
@@ -133,7 +253,7 @@ class RestrauntController extends Controller
     public function edit(string $id)
     {
         $restaurant = Restaurant::find($id);
-        return view('admin.restraunts.edit' , compact('restaurant'));
+        return view('admin.restraunts.edit', compact('restaurant'));
     }
 
     /**
@@ -196,7 +316,6 @@ class RestrauntController extends Controller
 
             // Web response
             return redirect()->route('admin.restaurants.index')->with('success', 'Restaurant updated successfully');
-
         } catch (\Exception $e) {
             // Rollback any new images if update fails
             if (isset($data['restaurant_images']) && $data['restaurant_images'] !== $restaurant->restaurant_images) {

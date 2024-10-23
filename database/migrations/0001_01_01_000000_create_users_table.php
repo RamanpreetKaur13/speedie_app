@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('phone');
             $table->text('address');
             $table->boolean('is_active');
-            $table->string('role')->default('customer');  // Default role: customer
+            $table->enum('role', ['admin', 'restaurant_owner', 'customer', 'delivery'])->default('customer');
+            // $table->string('role')->default('customer');  // Default role: customer
             $table->rememberToken();
             $table->timestamps();
         });

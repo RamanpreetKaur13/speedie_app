@@ -54,6 +54,38 @@ if (!function_exists('delete_image')) {
 }
 
 
+function generateStrongPassword($length = 12)
+{
+    $uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $lowercase = 'abcdefghijklmnopqrstuvwxyz';
+    $numbers = '0123456789';
+    $specialChars = '!@#$%^&*()-_=+';
+
+    // Ensure at least one character from each category
+    $password = [
+        $uppercase[random_int(0, strlen($uppercase) - 1)], // one uppercase
+        $lowercase[random_int(0, strlen($lowercase) - 1)], // one lowercase
+        $numbers[random_int(0, strlen($numbers) - 1)],     // one number
+        $specialChars[random_int(0, strlen($specialChars) - 1)], // one special char
+    ];
+
+    // Calculate remaining length
+    $remainingLength = $length - count($password);
+    
+    // All possible characters for the rest of the password
+    $allChars = $uppercase . $lowercase . $numbers . $specialChars;
+    
+    // Fill the remaining length with random characters
+    for ($i = 0; $i < $remainingLength; $i++) {
+        $password[] = $allChars[random_int(0, strlen($allChars) - 1)];
+    }
+
+    // Shuffle the password array to make it random
+    shuffle($password);
+
+    return implode('', $password);
+}
+
 
 
 

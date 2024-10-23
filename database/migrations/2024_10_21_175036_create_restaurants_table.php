@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('restaurants', function (Blueprint $table) {
             $table->id();
+            $table->enum('role', ['restaurant_owner'])->default('restaurant_owner');                        // Restaurant role
             $table->string('name');                         // Restaurant Name
             $table->text('description');                    // Restaurant Description
             $table->string('speciality');                     // Cuisine speciality
@@ -29,6 +30,7 @@ return new class extends Migration
             $table->string('phone');                        // Phone Number
             $table->string('secondary_phone')->nullable();  // Secondary Phone
             $table->string('email')->unique();              // Restaurant Email
+            $table->string('password')->unique()->nullable();              // Restaurant auto generated password
             $table->string('website')->nullable();          // Restaurant Website
             $table->string('opening_time');                   // Opening Time
             $table->string('closing_time');                   // Closing Time
