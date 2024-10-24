@@ -45,59 +45,90 @@ class AdminController extends Controller
     // }
 
    
-        public function login(Request $request)
-        {
-            // If already logged in as admin, redirect to dashboard
-            if (Auth::check() && Auth::user()->role === 'admin') {
-                return redirect()->route('admin.dashboard');
-            }
+        // public function login(Request $request)
+        // {
+        //     // If already logged in as admin, redirect to dashboard
+        //     if (Auth::check() && Auth::user()->role === 'admin') {
+        //         return redirect()->route('admin.dashboard');
+        //     }
     
-            if ($request->isMethod('post')) {
-                $validator = Validator::make($request->all(), [
-                    'email' => 'required|email',
-                    'password' => 'required'
-                ], [
-                    'email.required' => 'Email is required',
-                    'password.required' => 'Password is required'
-                ]);
+        //     if ($request->isMethod('post')) {
+        //         $validator = Validator::make($request->all(), [
+        //             'email' => 'required|email',
+        //             'password' => 'required'
+        //         ], [
+        //             'email.required' => 'Email is required',
+        //             'password.required' => 'Password is required'
+        //         ]);
     
-                if ($validator->fails()) {
-                    return redirect()->back()
-                        ->withErrors($validator)
-                        ->withInput($request->except('password'));
-                }
+        //         if ($validator->fails()) {
+        //             return redirect()->back()
+        //                 ->withErrors($validator)
+        //                 ->withInput($request->except('password'));
+        //         }
     
-                // Attempt to authenticate using default guard
-                if (Auth::attempt([
-                    'email' => $request->email,
-                    'password' => $request->password,
-                    'role' => 'admin' // Add role check in the authentication attempt
-                ], $request->filled('remember'))) {
+        //         // Attempt to authenticate using default guard
+        //         if (Auth::attempt([
+        //             'email' => $request->email,
+        //             'password' => $request->password,
+        //             'role' => 'admin' // Add role check in the authentication attempt
+        //         ], $request->filled('remember'))) {
                     
-                    $request->session()->regenerate();
+        //             $request->session()->regenerate();
     
-                    // Handle remember me cookies if needed
-                    // adding 3600 (seconds) means the cookies will expire in 1 hour. After this time, the cookies will no longer be available.
-                    if ($request->filled('remember')) {
-                        setcookie('email', $request->email, time() + 3600);
-                        setcookie('password', $request->password, time() + 3600);
-                    } else {
-                        setcookie('email', '', time() - 3600);
-                        setcookie('password', '', time() - 3600);
-                    }
+        //             // Handle remember me cookies if needed
+        //             // adding 3600 (seconds) means the cookies will expire in 1 hour. After this time, the cookies will no longer be available.
+        //             if ($request->filled('remember')) {
+        //                 setcookie('email', $request->email, time() + 3600);
+        //                 setcookie('password', $request->password, time() + 3600);
+        //             } else {
+        //                 setcookie('email', '', time() - 3600);
+        //                 setcookie('password', '', time() - 3600);
+        //             }
     
-                    return redirect()->intended(route('admin.dashboard'))
-                        ->with('success', 'Admin logged in successfully');
-                }
+        //             return redirect()->intended(route('admin.dashboard'))
+        //                 ->with('success', 'Admin logged in successfully');
+        //         }
     
-                return redirect()->back()
-                    ->with('error', 'Invalid email or password')
-                    ->withInput($request->except('password'));
-            }
+        //         return redirect()->back()
+        //             ->with('error', 'Invalid email or password')
+        //             ->withInput($request->except('password'));
+        //     }
     
-            return view('admin.login');
+        //     return view('admin.login');
+        // }
+
+        
+    
+        public function login(Request $request)
+{
+    if ($request->isMethod('post')) {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::guard('admin')->attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended(route('admin.dashboard'));
         }
-    
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
+    }
+
+    return view('admin.login');
+}
+
+public function logout(Request $request)
+{
+    Auth::guard('admin')->logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    // return redirect('/');
+    return redirect()->intended(route('admin.login'))->with('success', 'Admin logout successfully');
+}
 
     public function dashboard()
     {
@@ -109,16 +140,16 @@ class AdminController extends Controller
     }
    
 
-    public function logout(Request $request): RedirectResponse
-    {
-        Auth::guard('web')->logout();
+    // public function logout(Request $request): RedirectResponse
+    // {
+    //     Auth::guard('web')->logout();
 
-        // $request->session()->invalidate();
+    //     // $request->session()->invalidate();
 
-        // $request->session()->regenerateToken();
+    //     // $request->session()->regenerateToken();
 
-        return redirect()->intended(route('admin.login'))
-                        ->with('success', 'Admin logout in successfully');
-    }
+    //     return redirect()->intended(route('admin.login'))
+    //                     ->with('success', 'Admin logout in successfully');
+    // }
 
 }

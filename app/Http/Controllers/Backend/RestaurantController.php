@@ -12,17 +12,102 @@ use App\Models\Restaurant;
 use App\Http\Requests\RestaurantRequest;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
+use Illuminate\View\View;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\RedirectResponse;
 
 class RestaurantController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+
+    public function restaurantLogin(Request $request)
+    {
+
+        // If already logged in as restaurant owner, redirect to dashboard
+        if (Auth::guard('restaurant')->check()) {
+            return redirect()->route('restaurant.dashboard');
+        }
+        if ($request->isMethod('post')) {
+            $validator = Validator::make($request->all(), [
+                'email' => 'required|email',
+                'password' => 'required'
+            ], [
+                'email.required' => 'Email is required',
+                'password.required' => 'Password is required'
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput($request->except('password'));
+            }
+
+            // Check if it's a restaurant owner's email
+            $restaurant = Restaurant::where('email', $request->email)
+                ->where('role', 'restaurant_owner')
+                ->first();
+
+            if (!$restaurant) {
+                return redirect()->back()
+                    ->with('error', 'No restaurant account found with this email')
+                    ->withInput($request->except('password'));
+            }
+
+            // Attempt to authenticate
+            if (Auth::guard('restaurant')->attempt([
+                'email' => $request->email,
+                'password' => $request->password,
+                'role' => 'restaurant_owner'
+            ], $request->filled('remember'))) {
+
+                $request->session()->regenerate();
+
+                // Handle remember me cookies
+                if ($request->filled('remember')) {
+                    setcookie('restaurant_email', $request->email, time() + 3600);
+                    setcookie('restaurant_password', $request->password, time() + 3600);
+                } else {
+                    setcookie('restaurant_email', '', time() - 3600);
+                    setcookie('restaurant_password', '', time() - 3600);
+                }
+
+                return redirect()->intended(route('restaurant.dashboard'))
+                    ->with('success', 'Welcome back to your restaurant dashboard');
+            }
+
+            return redirect()->back()
+                ->with('error', 'Invalid email or password')
+                ->withInput($request->except('password'));
+        }
+
+        return view('admin.restaurant.auth.login');
+    }
+
+    //dashboard
+    public function dashboard(){
+        return view('admin.restaurant.dashboard');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::guard('restaurant')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('restaurant.login')
+            ->with('success', 'You have been logged out successfully');
+    }
+
+
     public function index()
     {
         $restaurants = Restaurant::all();
-        return view('admin.restraunts.index', compact('restaurants'));
+        return view('admin.restaurant.index', compact('restaurants'));
     }
 
     /**
@@ -30,7 +115,7 @@ class RestaurantController extends Controller
      */
     public function create()
     {
-        return view('admin.restraunts.create');
+        return view('admin.restaurant.create');
     }
 
 
@@ -38,8 +123,8 @@ class RestaurantController extends Controller
     public function store(RestaurantRequest $request)
     {
         try {
-              // Generate random password for restaurant owner
-              $password = generateStrongPassword(12);// 12 character random string
+            // Generate random password for restaurant owner
+            $plainTextPassword = generateStrongPassword(12);  // Store in variable before hashing
 
             // Store images
             try {
@@ -66,7 +151,7 @@ class RestaurantController extends Controller
                 'phone' => $request->phone,
                 'secondary_phone' => $request->secondary_phone,
                 'email' => $request->email,
-                'password' => Hash::make($password),
+                'password' => Hash::make($plainTextPassword),  // Hash the password for storage
                 'website' => $request->website,
                 'owner_name' => $request->owner_name,
                 'owner_contact_number' => $request->owner_contact_number,
@@ -91,6 +176,10 @@ class RestaurantController extends Controller
                     'status' => true,
                     'message' => 'Restaurant created successfully',
                     'data' => $restaurant,
+                    'owner_credentials' => [
+                        'email' => $restaurant->email,
+                        'password' => $plainTextPassword  // Return the plain text password in response
+                    ],
                     'images' => [
                         // 'logo' => asset("storage/restaurants/logos/{$logoFilename}"),
                         'restaurant_image' => asset("storage/restaurants/images/{$restaurantImage}"),
@@ -104,14 +193,21 @@ class RestaurantController extends Controller
             //     ->route('restaurants.index')
             //     ->with('success', 'Restaurant created successfully');
 
-            return redirect()->route('admin.restaurants.index')->with('success', 'Restaurant created successfully');
+            // return redirect()->route('admin.restaurants.index')->with('success', 'Restaurant created successfully');
+            // Web response - Store credentials in session flash data
+            return redirect()->route('admin.restaurants.index')->with('success', 'Restaurant created successfully')
+                // ->with('owner_credentials', [
+                //     'email' => $restaurant->email,
+                //     'password' => $plainTextPassword
+                ->with('email', $restaurant->email)
+                ->with('password', $plainTextPassword);
         } catch (\Exception $e) {
             // Delete uploaded images if restaurant creation fails
             // delete_image($logoFilename, 'restaurants/logos');
             delete_image($restaurantImage, 'restaurants/images');
             delete_image($featuredImage, 'restaurants/featured');
 
-            if ($request->expectsJson()|| $request->is('api/*')) {
+            if ($request->expectsJson() || $request->is('api/*')) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Failed to create restaurant',
@@ -253,7 +349,7 @@ class RestaurantController extends Controller
     public function edit(string $id)
     {
         $restaurant = Restaurant::find($id);
-        return view('admin.restraunts.edit', compact('restaurant'));
+        return view('admin.restaurant.edit', compact('restaurant'));
     }
 
     /**

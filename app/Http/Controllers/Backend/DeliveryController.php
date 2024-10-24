@@ -7,19 +7,19 @@ use Illuminate\Http\Request;
 
 class DeliveryController extends Controller
 {
-    public function showDeliveryRegistration(Request $request){
-       
-        if ($request->isMethod('post')) {
-        }else{
+    public function deliveryRegistration(Request $request)
+    {
 
             return view('admin.delivery.register');
-        }
+        
     }
 
-    public function dashboard(){
+    public function dashboard()
+    {
         return 'delivery';
     }
-    public function profile(){
+    public function profile()
+    {
         return 'profile';
     }
 }

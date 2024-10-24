@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
+    public function login(){
+        return 'login';
+    }
     public function dashboard(){
         return 'customer';
     }

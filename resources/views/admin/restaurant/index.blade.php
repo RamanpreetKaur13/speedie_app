@@ -12,6 +12,16 @@
                 </a>
                 </div> --}}
                 @include('alert_messages')
+                @if (session('email') && session('password'))
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading">Restaurant Owner Credentials</h4>
+                    <p>Please share these credentials with the restaurant owner:</p>
+                    <p><strong>Email:</strong> {{ session('email') }}</p>
+                    <p><strong>Password:</strong> {{ session('password') }}</p>
+                    <p class="mb-0">Note: This password will only be shown once.</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="mb-0">Restaurants</h3>
                     {{-- <small class="text-body float-end">Default label</small> --}}

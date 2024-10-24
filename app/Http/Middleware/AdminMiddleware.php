@@ -14,25 +14,69 @@ class AdminMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
+    // public function handle(Request $request, Closure $next): Response
+    // {
+    //     // if (Auth::check() && Auth::user()->role === 'admin') {
+    //     //     return $next($request);
+    //     // }
+
+    //     // abort(403, 'Unauthorized access.');
+
+    //     if (Auth::check() && Auth::user()->role === 'admin') {
+    //         return $next($request);
+    //     }
+    //      // Check if it's an API request
+    //     if ($request->expectsJson() || $request->is('api/*')) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Unauthorized. This endpoint is only accessible to administrators.',
+    //         ], 403);
+    //     }
+        
+    //     abort(403, 'This section is only accessible to administrators.');
+    // }
+
+    // public function handle(Request $request, Closure $next): Response
+    // {
+    //     if (!Auth::guard('admin')->check() || Auth::guard('admin')->user()->role !== 'admin') {
+    //         if ($request->expectsJson() || $request->is('api/*')) {
+    //             return response()->json([
+    //                 'success' => false,
+    //                 'message' => 'Unauthorized. Administrator access only.',
+    //             ], 403);
+    //         }
+    //         return redirect()->route('admin.login');
+    //     }
+    //     return $next($request);
+    // }
+
     public function handle(Request $request, Closure $next): Response
     {
-        // if (Auth::check() && Auth::user()->role === 'admin') {
-        //     return $next($request);
-        // }
-
-        // abort(403, 'Unauthorized access.');
-
-        if (Auth::check() && Auth::user()->role === 'admin') {
-            return $next($request);
+        // Check if user is logged in and using admin guard
+        if (!Auth::guard('admin')->check()) {
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized. Admin access only.',
+                ], 403);
+            }
+            return redirect()->route('admin.login');
         }
-         // Check if it's an API request
-        if ($request->expectsJson() || $request->is('api/*')) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized. This endpoint is only accessible to administrators.',
-            ], 403);
+
+        // Ensure user is actually an admin
+        if (Auth::guard('admin')->user()->role !== 'admin') {
+            Auth::guard('admin')->logout();
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized. Admin access only.',
+                ], 403);
+            }
+            return redirect()->route('admin.login')
+                ->with('error', 'Unauthorized access attempt.');
         }
-        
-        abort(403, 'This section is only accessible to administrators.');
+
+        return $next($request);
     }
+
 }
