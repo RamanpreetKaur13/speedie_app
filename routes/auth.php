@@ -8,7 +8,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\DeliveryRegistrationController;
+// use App\Http\Controllers\Auth\DeliveryRegistrationController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 
 
@@ -38,10 +38,10 @@ Route::middleware('guest')->group(function () {
         ->name('password.store');
 
         // Delivery Partner Registration Routes
-    Route::get('delivery/register', [DeliveryRegistrationController::class, 'create'])
-    ->name('delivery.register');
-Route::post('delivery/register', [DeliveryRegistrationController::class, 'store']);
-});
+//     Route::get('delivery/register', [DeliveryRegistrationController::class, 'create'])
+//     ->name('delivery.register');
+// Route::post('delivery/register', [DeliveryRegistrationController::class, 'store']);
+ });
 
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)

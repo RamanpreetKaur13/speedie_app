@@ -96,9 +96,10 @@ Route::middleware('guest:restaurant')->group(function () {
 });
 
 Route::middleware('guest:delivery')->group(function () {
-    Route::match(['get', 'post'], '/delivery/registration', [DeliveryController::class, 'deliveryRegistration'])
-        ->name('delivery.registration');
-    Route::match(['get', 'post'], '/delivery/login', [DeliveryController::class, 'login'])
+    Route::get('/delivery/registration', [DeliveryController::class, 'deliveryRegistrationForm'])->name('delivery.registration');
+    Route::post('/delivery/registrationStore', [DeliveryController::class, 'deliveryRegistration'])
+        ->name('delivery.registrationStore');
+    Route::match(['get', 'post'], '/delivery/login', [DeliveryController::class, 'deliveryLogin'])
         ->name('delivery.login');
 });
 
