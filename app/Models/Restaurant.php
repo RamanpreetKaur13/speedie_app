@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens; // Add this line
 
 class Restaurant extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasApiTokens; // Use the trait here
 
     protected $guarded = ['id'];
 

@@ -6,36 +6,40 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\DeliveryController;
-use App\Http\Controllers\Api\RestrauntController;
+use App\Http\Controllers\Api\RestaurantController;
 
-// use App\Http\Controllers\Backend\RestrauntController;
-
-Route::get('/user', function (Request $request) {
+// Passport-protected route to fetch authenticated user data
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');
-
+});
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-//admin routes
+// Admin routes
 Route::post('/admin/login', [AdminController::class, 'login'])
     ->name('admin.login');
 
+    // restaurant routes
+Route::post('/restaurant/login', [RestaurantController::class, 'restaurantLoginApi'])
+->name('restaurant.login');
+
+// Protected restaurant routes
+Route::middleware('auth:restaurant-api')->prefix('restaurant')->group(function () {
+    Route::get('/dashboard', [RestaurantController::class, 'dashboard']);
+    Route::get('/profile', [RestaurantController::class, 'profile']);
+});
+
+
 // Protected routes
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    //user/customer routes
-    // Route::get('/user', [CustomerController::class, 'dashboard']);
-    // Customer/User Routes
+    // User/Customer routes
     Route::middleware('customer')->group(function () {
         Route::get('/dashboard', [CustomerController::class, 'dashboard']);
         Route::get('/profile', [CustomerController::class, 'profile']);
-        // Route::get('/restaurants', [CustomerController::class, 'restaurants']);
-        // Route::get('/orders', [CustomerController::class, 'orders']);
-        // Add other customer-specific routes here
     });
 
     // Admin Routes
@@ -44,26 +48,22 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard']);
         Route::get('/profile', [AdminController::class, 'profile']);
 
-        // Restaurants create
-
-            //api controller
-            Route::post('/restaurants/store', [RestrauntController::class, 'store']);
-            Route::get('/restaurants/get', [RestrauntController::class, 'get']);
-            Route::get('/restaurants/edit/{id}', [RestrauntController::class, 'edit']);
-            Route::put('/restaurants/update/{id}', [RestrauntController::class, 'update']);
-
-
-
+        // Restaurant CRUD operations for admin
+        Route::post('/restaurants/store', [RestaurantController::class, 'store']);
+        Route::get('/restaurants/get', [RestaurantController::class, 'get']);
+        Route::get('/restaurants/edit/{id}', [RestaurantController::class, 'edit']);
+        Route::put('/restaurants/update/{id}', [RestaurantController::class, 'update']);
     });
+
+     // restaurant owner Routes
+    //  Route::middleware('restaurant')->prefix('restaurant')->group(function () {
+    //     Route::get('/resDashboard', [RestaurantController::class, 'dashboard']);
+    //     Route::get('/profile', [RestaurantController::class, 'profile']);
+    // });
 
     // Delivery Boy Routes
     Route::middleware('delivery')->prefix('delivery')->group(function () {
         Route::get('/dashboard', [DeliveryController::class, 'dashboard']);
         Route::get('/profile', [DeliveryController::class, 'profile']);
     });
-
-    // Customer Routes
-    // Route::middleware('customer')->prefix('customer')->group(function () {
-    //     Route::get('/restaurants', [CustomerController::class, 'restaurants']);
-    // });
 });

@@ -14,26 +14,11 @@ class RestaurantMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    // public function handle(Request $request, Closure $next): Response
-    // {
-
-    //     if (Auth::check() && Auth::user()->role === 'restaurant_owner') {
-    //         return $next($request);
-    //     }
-
-    //     if ($request->expectsJson() || $request->is('api/*')) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Unauthorized. Restaurant access only.',
-    //         ], 403);
-    //     }
-
-    //     abort(403, 'This section is only accessible to restaurant owners.');
-    // }
-
+   
 
     // public function handle(Request $request, Closure $next): Response
     // {
+    //     // Check if user is logged in and using restaurant guard
     //     if (!Auth::guard('restaurant')->check()) {
     //         if ($request->expectsJson() || $request->is('api/*')) {
     //             return response()->json([
@@ -43,36 +28,53 @@ class RestaurantMiddleware
     //         }
     //         return redirect()->route('restaurant.login');
     //     }
+
+    //     // Ensure user is actually a restaurant owner
+    //     if (Auth::guard('restaurant')->user()->role !== 'restaurant_owner') {
+    //         Auth::guard('restaurant')->logout();
+    //         if ($request->expectsJson() || $request->is('api/*')) {
+    //             return response()->json([
+    //                 'success' => false,
+    //                 'message' => 'Unauthorized. Restaurant access only.',
+    //             ], 403);
+    //         }
+    //         return redirect()->route('restaurant.login')
+    //             ->with('error', 'Unauthorized access attempt.');
+    //     }
+
     //     return $next($request);
     // }
 
     public function handle(Request $request, Closure $next): Response
-    {
-        // Check if user is logged in and using restaurant guard
+{
+    if ($request->is('api/*')) {
+        if (!Auth::guard('restaurant-api')->check()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized. Restaurant access only.',
+            ], 401);
+        }
+
+        if (Auth::guard('restaurant-api')->user()->role !== 'restaurant_owner') {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized. Restaurant owner access only.',
+            ], 403);
+        }
+    } else {
+        // Keep your existing web middleware logic
         if (!Auth::guard('restaurant')->check()) {
-            if ($request->expectsJson() || $request->is('api/*')) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Unauthorized. Restaurant access only.',
-                ], 403);
-            }
             return redirect()->route('restaurant.login');
         }
 
-        // Ensure user is actually a restaurant owner
         if (Auth::guard('restaurant')->user()->role !== 'restaurant_owner') {
             Auth::guard('restaurant')->logout();
-            if ($request->expectsJson() || $request->is('api/*')) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Unauthorized. Restaurant access only.',
-                ], 403);
-            }
             return redirect()->route('restaurant.login')
                 ->with('error', 'Unauthorized access attempt.');
         }
-
-        return $next($request);
     }
+
+    return $next($request);
+}
     
 }

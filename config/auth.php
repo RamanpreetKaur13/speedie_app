@@ -57,6 +57,16 @@ return [
             'provider' => 'delivery_boys',
         ],
 
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+        'restaurant-api' => [
+        'driver' => 'passport',
+        'provider' => 'restaurants',
+    ],
+
     ],
 
     /*
