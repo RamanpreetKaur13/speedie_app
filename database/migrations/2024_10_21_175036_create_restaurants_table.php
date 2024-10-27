@@ -54,14 +54,19 @@ return new class extends Migration
             // $table->decimal('min_order_amount', 8, 2)->nullable();     // Minimum Order Amount
             $table->decimal('delivery_fee', 8, 2)->nullable();         // Delivery Fee
             $table->string('delivery_time')->nullable();               // Estimated Delivery Time
+            $table->enum('delivery_on_off', ['on', 'off'])->default('off');              
             $table->string('restaurant_images')->nullable();                      // Restaurant Images
             $table->string('featured_image')->nullable();              // Featured Image
             // $table->json('payment_methods')->nullable();               // Accepted Payment Methods
             // $table->string('bank_details')->nullable();                // Bank Details (for payouts)
-            $table->enum('status', ['active', 'inactive'])->default('active'); // Restaurant Status
+            $table->enum('status', ['active', 'inactive', 'block'])->default('inactive'); // Restaurant Status
             $table->boolean('featured')->default(false);               // Featured Status
             $table->string('tax_gst_number')->nullable();                      // Tax ID/GST Number
-            $table->string('business_license')->nullable();            // Business License Number
+            // $table->string('business_license')->nullable();            // Business License Number
+            $table->string('fssai_number')->nullable();            // fssai_number License Number
+            $table->string('bank_holder_name')->nullable();           
+            $table->string('ifsc_code')->nullable();            
+            $table->string('bank_account_number')->nullable();            
             // $table->text('special_instructions')->nullable();          // Special Instructions (optional)
             $table->timestamps();
         });

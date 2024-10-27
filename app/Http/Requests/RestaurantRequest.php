@@ -39,10 +39,17 @@ class RestaurantRequest extends FormRequest
             'opening_time' => 'required|string',
             'closing_time' => 'required|string',
             'days_of_operation' => 'required|string',
-            'restraunt_images' => 'nullable|image|mimes:jpeg,png,jpg|max:10240', // 10240 KB = 10 MB',
+            // 'restraunt_images' => 'nullable|image|mimes:jpeg,png,jpg|max:10240', // 10240 KB = 10 MB',
             'featured_image' => 'nullable|image|mimes:jpeg,png,jpg|max:10240', // 10240 KB = 10 MB',
             'tax_gst_number' => 'nullable|string|max:50',
-            'business_license' => 'nullable|string|max:50',
+            'fssai_number' => 'nullable',
+            'delivery_fee' => 'nullable',
+            'delivery_time' => 'nullable',
+            'delivery_on_off' => 'nullable',
+            'average_cost_for_per_person' => 'nullable',
+            'bank_holder_name' => 'nullable',
+            'ifsc_code' => 'nullable',
+            'bank_account_number' => 'nullable',
         ];
 
          // Modify unique validation for update
@@ -65,7 +72,7 @@ class RestaurantRequest extends FormRequest
             'logo.image' => 'Logo must be an image file',
             'logo.mimes' => 'Logo must be a jpeg, png, or jpg file',
             // 'restraunt_images.required' => 'Restaurant images are required',
-            'restraunt_images.image' => 'Restaurant images must be image files',
+            // 'restraunt_images.image' => 'Restaurant images must be image files',
             // 'featured_image.required' => 'Featured image is required',
             'featured_image.image' => 'Featured image must be an image file',
             'delivery_radius.numeric' => 'Delivery radius must be a number',

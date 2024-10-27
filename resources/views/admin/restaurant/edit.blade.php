@@ -61,6 +61,7 @@
                                         <select name="status" id="status" class="form-control">
                                             <option value="active"  @if($restaurant->status ==  'active') selected @endif>Active</option>
                                             <option value="inactive"  @if($restaurant->status ==  'inactive') selected @endif>Inactive</option>
+                                            <option value="block"  @if($restaurant->status ==  'block') selected @endif>Block</option>
                                         </select>
 
                                     </div>
@@ -365,6 +366,9 @@
                                     </div>
                                 </div>
 
+                            </div>
+                            <div class="row">
+
                                 <div class="form-group col-6">
                                     <div class="mb-6">
                                         <label class="form-label" for="average_cost_for_per_person">Avg. cost per
@@ -378,6 +382,25 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group col-6">
+                                    <div class="mb-6">
+                                        <label class="form-label" for="delivery_on_off">Delivery On/Off</label>
+
+                                        <select name="delivery_on_off" id="delivery_on_off" class="form-control">
+                                            <option value="on"  @if ($restaurant->delivery_on_off == 'on') selected @endif>On</option>
+                                            <option value="off"  @if ($restaurant->delivery_on_off == 'off') selected @endif>Off</option>
+                                           
+                                        </select>
+
+
+                                        @error('average_cost_for_per_person')
+                                            <span class="text-danger"> {{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+
+
                             </div>
 
 
@@ -387,7 +410,7 @@
                             <hr>
                             <h4>7. Images and Media:</h4>
                             <div class="row">
-                                <div class="form-group col-6">
+                                {{-- <div class="form-group col-6">
                                     <div class="mb-6">
                                         <label class="form-label" for="restaurant_images">Restaurant Images</label>
                                         <input type="file" class="form-control" id="restaurant_images"
@@ -401,7 +424,7 @@
                                         </div>
 
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="form-group col-6">
                                     <div class="mb-6">
                                         <label class="form-label" for="featured_image">Featured Image</label>
@@ -435,18 +458,61 @@
                                 </div>
                                 <div class="form-group col-6">
                                     <div class="mb-6">
-                                        <label class="form-label" for="business_license">Business License
-                                            Number</label>
-                                        <input type="text" class="form-control" id="business_license"
-                                            placeholder="Enter business license number" name="business_license"
-                                            value="{{ old('business_license', $restaurant->business_license) }}" />
-                                        @error('business_license')
+                                       
+                                        <label class="form-label" for="fssai_number">Fssai 
+                                            Number/Code</label>
+                                        <input type="text" class="form-control" id="fssai_number"
+                                            placeholder="Enter fssai number" name="fssai_number"
+                                            value="{{ old('fssai_number', $restaurant->fssai_number) }}" />
+                                            @error('fssai_number')
+                                            <span class="text-danger"> {{ $message }}</span>
+                                        @enderror
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <h4>9. Bank Details :</h4>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <div class="mb-6">
+                                        <label class="form-label" for="bank_holder_name">Bank Holder's name</label>
+                                        <input type="text" class="form-control" id="bank_holder_name"
+                                            placeholder="Enter bank holder's name" name="bank_holder_name"
+                                            value="{{ old('bank_holder_name' ,$restaurant->bank_holder_name ) }}" />
+                                        @error('bank_holder_name')
+                                            <span class="text-danger"> {{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group col-6">
+                                    <div class="mb-6">
+                                        <label class="form-label" for="bank_account_number">Bank Account Number</label>
+                                        <input type="text" class="form-control" id="bank_account_number"
+                                            placeholder="Enter bank account number" name="bank_account_number"
+                                            value="{{ old('bank_account_number' ,$restaurant->bank_account_number) }}" />
+                                        @error('bank_account_number')
                                             <span class="text-danger"> {{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
 
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <div class="mb-6">
+                                        <label class="form-label" for="ifsc_code">IFSC Code</label>
+                                        <input type="text" class="form-control" id="ifsc_code"
+                                            placeholder="Enter IFSC code" name="ifsc_code"
+                                            value="{{ old('ifsc_code' , $restaurant->ifsc_code) }}" />
+                                        @error('ifsc_code')
+                                            <span class="text-danger"> {{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                
+                            </div>
 
 
                             <button type="submit" class="btn btn-primary">Submit</button>
