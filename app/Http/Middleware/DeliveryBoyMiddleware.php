@@ -69,32 +69,69 @@ class DeliveryBoyMiddleware
     //     return $next($request);
     // }
 
+    // public function handle(Request $request, Closure $next): Response
+    // {
+    //     // Check if user is logged in and using delivery guard
+    //     if (!Auth::guard('delivery')->check()) {
+    //         if ($request->expectsJson() || $request->is('api/*')) {
+    //             return response()->json([
+    //                 'success' => false,
+    //                 'message' => 'Unauthorized. Delivery access only.',
+    //             ], 403);
+    //         }
+    //         return redirect()->route('delivery.login');
+    //     }
+
+    //     // Ensure user is actually a delivery boy
+    //     if (Auth::guard('delivery')->user()->role !== 'delivery_boy') {
+    //         Auth::guard('delivery')->logout();
+    //         if ($request->expectsJson() || $request->is('api/*')) {
+    //             return response()->json([
+    //                 'success' => false,
+    //                 'message' => 'Unauthorized. Delivery access only.',
+    //             ], 403);
+    //         }
+    //         return redirect()->route('delivery.login')
+    //             ->with('error', 'Unauthorized access attempt.');
+    //     }
+
+    //     return $next($request);
+    // }
+
     public function handle(Request $request, Closure $next): Response
     {
-        // Check if user is logged in and using delivery guard
-        if (!Auth::guard('delivery')->check()) {
-            if ($request->expectsJson() || $request->is('api/*')) {
+        if ($request->is('api/*')) {
+            // Check if authenticated with delivery-api guard
+            if (!Auth::guard('delivery-api')->check()) {
                 return response()->json([
-                    'success' => false,
-                    'message' => 'Unauthorized. Delivery access only.',
-                ], 403);
+                    'status' => false,
+                    'message' => 'Unauthorized. Please login as delivery personnel.',
+                ], 401);
             }
-            return redirect()->route('delivery.login');
-        }
 
-        // Ensure user is actually a delivery boy
-        if (Auth::guard('delivery')->user()->role !== 'delivery_boy') {
-            Auth::guard('delivery')->logout();
-            if ($request->expectsJson() || $request->is('api/*')) {
+            // Simple role check
+            $user = Auth::guard('delivery-api')->user();
+            if ($user->role !== 'delivery_boy') {
                 return response()->json([
-                    'success' => false,
-                    'message' => 'Unauthorized. Delivery access only.',
+                    'status' => false,
+                    'message' => 'Access denied. delivery personnel only.',
                 ], 403);
             }
-            return redirect()->route('delivery.login')
-                ->with('error', 'Unauthorized access attempt.');
+
+        } else {
+            // Web routes
+            if (!Auth::guard('delivery')->check()) {
+                return redirect()->route('delivery.login');
+            }
+
+            if (Auth::guard('delivery')->user()->role !== 'delivery_boy') {
+                Auth::guard('delivery')->logout();
+                return redirect()->route('delivery.login')
+                    ->with('error', 'Unauthorized access attempt.');
+            }
         }
 
         return $next($request);
     }
+
 }

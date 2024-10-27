@@ -45,7 +45,7 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        
+
 
         'restaurant' => [
             'driver' => 'session',
@@ -57,15 +57,22 @@ return [
             'provider' => 'delivery_boys',
         ],
 
+        //api guards
         'api' => [
             'driver' => 'passport',
             'provider' => 'users',
             'hash' => false,
         ],
         'restaurant-api' => [
-        'driver' => 'passport',
-        'provider' => 'restaurants',
-    ],
+            'driver' => 'passport',
+            'provider' => 'restaurants',
+        ],
+
+        'delivery-api' => [
+            'driver' => 'passport',
+            'provider' => 'delivery_boys',
+        ],
+
 
     ],
 
@@ -97,13 +104,13 @@ return [
         //     'table' => 'users',
         // ],
         'restaurants' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\Restaurant::class,
-    ],
-    'delivery_boys' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\DeliveryBoy::class,
-    ],
+            'driver' => 'eloquent',
+            'model' => App\Models\Restaurant::class,
+        ],
+        'delivery_boys' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\DeliveryBoy::class,
+        ],
     ],
 
     /*

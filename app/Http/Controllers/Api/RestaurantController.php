@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Hash;
 class RestaurantController extends Controller
 {
 
-  
+
     // public function restaurantLoginApi(Request $request)
     // {
     //     // Handle POST request for login
@@ -27,38 +27,38 @@ class RestaurantController extends Controller
     //             'email.required' => 'Email is required',
     //             'password.required' => 'Password is required'
     //         ]);
-    
+
     //         if ($validator->fails()) {
     //             return response()->json([
     //                 'status' => false,
     //                 'errors' => $validator->errors()
     //             ], 422);
     //         }
-    
+
     //         // Verify restaurant owner by email and role
     //         $restaurant = Restaurant::where('email', $request->email)
     //             ->where('role', 'restaurant_owner')
     //             ->first();
-    
+
     //         if (!$restaurant) {
     //             return response()->json([
     //                 'status' => false,
     //                 'message' => 'No restaurant account found with this email'
     //             ], 404);
     //         }
-    
+
     //         // Attempt login for restaurant owner using Auth::attempt() without session
     //         if (Auth::guard('restaurant')->validate([
     //             'email' => $request->email,
     //             'password' => $request->password,
     //             'role' => 'restaurant_owner'
     //         ])) {
-    
+
     //             // Generate Passport token
     //             // $token = $restaurant->createToken('Restaurant Access Token')->accessToken;
     //             $token = $restaurant->createToken('RestaurantToken')->accessToken;
 
-    
+
     //             return response()->json([
     //                 'status' => true,
     //                 'message' => 'Restaurant login successful',
@@ -71,7 +71,7 @@ class RestaurantController extends Controller
     //                 ]
     //             ], 201);
     //         }
-    
+
     //         return response()->json([
     //             'status' => false,
     //             'message' => 'Invalid email or password'
@@ -80,102 +80,175 @@ class RestaurantController extends Controller
     // }
 
 
-//     public function restaurantLoginApi(Request $request)
-// {
-//     $validator = Validator::make($request->all(), [
-//         'email' => 'required|email',
-//         'password' => 'required'
-//     ]);
+    //     public function restaurantLoginApi(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'email' => 'required|email',
+    //         'password' => 'required'
+    //     ]);
 
-//     if ($validator->fails()) {
-//         return response()->json([
-//             'status' => false,
-//             'errors' => $validator->errors()
-//         ], 422);
-//     }
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'errors' => $validator->errors()
+    //         ], 422);
+    //     }
 
-//     // Find the restaurant
-//     $restaurant = Restaurant::where('email', $request->email)
-//         ->where('role', 'restaurant_owner')
-//         ->first();
+    //     // Find the restaurant
+    //     $restaurant = Restaurant::where('email', $request->email)
+    //         ->where('role', 'restaurant_owner')
+    //         ->first();
 
-//     if (!$restaurant) {
-//         return response()->json([
-//             'status' => false,
-//             'message' => 'No restaurant account found with this email'
-//         ], 404);
-//     }
+    //     if (!$restaurant) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'No restaurant account found with this email'
+    //         ], 404);
+    //     }
 
-//     // Check credentials manually
-//     if (!Hash::check($request->password, $restaurant->password)) {
-//         return response()->json([
-//             'status' => false,
-//             'message' => 'Invalid credentials'
-//         ], 401);
-//     }
+    //     // Check credentials manually
+    //     if (!Hash::check($request->password, $restaurant->password)) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'Invalid credentials'
+    //         ], 401);
+    //     }
 
-//     // Create token with restaurant-api scope
-//     $token = $restaurant->createToken('RestaurantToken', ['restaurant'])->accessToken;
+    //     // Create token with scope
+    //     $token = $restaurant->createToken('RestaurantToken', ['restaurant'])->accessToken;
 
-//     return response()->json([
-//         'status' => true,
-//         'message' => 'Restaurant login successful',
-//         'token' => $token,
-//         'data' => [
-//             'id' => $restaurant->id,
-//             'name' => $restaurant->name,
-//             'email' => $restaurant->email,
-//         ]
-//     ], 200);
-// }
+    //     return response()->json([
+    //         'status' => true,
+    //         'message' => 'Restaurant login successful',
+    //         'token' => $token,
+    //         'data' => [
+    //             'id' => $restaurant->id,
+    //             'name' => $restaurant->name,
+    //             'email' => $restaurant->email,
+    //         ]
+    //     ], 200);
+    // }
 
-public function restaurantLoginApi(Request $request)
-{
-    $validator = Validator::make($request->all(), [
-        'email' => 'required|email',
-        'password' => 'required'
-    ]);
+    // public function restaurantLoginApi(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'email' => 'required|email',
+    //         'password' => 'required'
+    //     ]);
 
-    if ($validator->fails()) {
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'errors' => $validator->errors()
+    //         ], 422);
+    //     }
+
+    //     // $restaurant = Restaurant::where('email', $request->email)
+    //     //     ->where('role', 'restaurant_owner')
+    //     //     ->first();
+
+    //     // if (!$restaurant) {
+    //     //     return response()->json([
+    //     //         'status' => false,
+    //     //         'message' => 'No restaurant account found with this email'
+    //     //     ], 404);
+    //     // }
+
+    //     // if (!Hash::check($request->password, $restaurant->password)) {
+    //     //     return response()->json([
+    //     //         'status' => false,
+    //     //         'message' => 'Invalid credentials'
+    //     //     ], 401);
+    //     // }
+
+    //     // $token = $restaurant->createToken('RestaurantToken', ['restaurant-access'])->accessToken;
+
+    //     // return response()->json([
+    //     //     'status' => true,
+    //     //     'message' => 'Restaurant login successful',
+    //     //     'token' => $token,
+    //     //     'data' => [
+    //     //         'id' => $restaurant->id,
+    //     //         'name' => $restaurant->name,
+    //     //         'email' => $restaurant->email,
+    //     //     ]
+    //     // ], 200);
+
+    //     $restaurant = Restaurant::where('email', $request->email)
+    //         ->where('role', 'restaurant_owner')
+    //         ->first();
+
+    //     if (!$restaurant || !Hash::check($request->password, $restaurant->password)) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'Invalid credentials'
+    //         ], 401);
+    //     }
+
+    //     // Revoke existing tokens
+    //     $restaurant->tokens()->delete();
+
+    //     // Create new token with restaurant-access scope only
+    //     $token = $restaurant->createToken('RestaurantAccess', ['restaurant-access'])->accessToken;
+
+    //     return response()->json([
+    //         'status' => true,
+    //         'message' => 'Login successful',
+    //         'token' => $token,
+    //         'data' => $restaurant->only(['id', 'name', 'email'])
+    //     ]);
+    // }
+
+    public function restaurantLoginApi(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $restaurant = Restaurant::where('email', $request->email)
+            ->where('role', 'restaurant_owner')
+            ->first();
+
+        if (!$restaurant) {
+            return response()->json([
+                'status' => false,
+                'message' => 'No restaurant boy account found with this email'
+            ], 404);
+        }
+
+        if (!Hash::check($request->password, $restaurant->password)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid credentials'
+            ], 401);
+        }
+
+        // Create a simple token without scopes
+        $token = $restaurant->createToken('restaurantAccess')->accessToken;
+
         return response()->json([
-            'status' => false,
-            'errors' => $validator->errors()
-        ], 422);
+            'status' => true,
+            'message' => 'restaurant login successful',
+            'token' => $token,
+            'user' => [
+                'id' => $restaurant->id,
+                'name' => $restaurant->name,
+                'email' => $restaurant->email,
+                'role' => $restaurant->role
+            ]
+        ], 200);
     }
 
-    $restaurant = Restaurant::where('email', $request->email)
-        ->where('role', 'restaurant_owner')
-        ->first();
-
-    if (!$restaurant) {
-        return response()->json([
-            'status' => false,
-            'message' => 'No restaurant account found with this email'
-        ], 404);
-    }
-
-    if (!Hash::check($request->password, $restaurant->password)) {
-        return response()->json([
-            'status' => false,
-            'message' => 'Invalid credentials'
-        ], 401);
-    }
-
-    $token = $restaurant->createToken('RestaurantToken', ['restaurant-access'])->accessToken;
-
-    return response()->json([
-        'status' => true,
-        'message' => 'Restaurant login successful',
-        'token' => $token,
-        'data' => [
-            'id' => $restaurant->id,
-            'name' => $restaurant->name,
-            'email' => $restaurant->email,
-        ]
-    ], 200);
-}
-
-    public function dashboard(){
+    public function dashboard()
+    {
         return 'hlo restraunt';
     }
     public function store(RestaurantRequest $request)
@@ -309,10 +382,10 @@ public function restaurantLoginApi(Request $request)
                 'error' => $e->getMessage(),
             ], 500);
         }
-
     }
 
-    public function update(){
+    public function update()
+    {
         dd('update restraunt');
     }
 }
