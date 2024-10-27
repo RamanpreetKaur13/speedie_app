@@ -75,204 +75,74 @@ class DeliveryController extends Controller
         }
     }
 
-    // public function deliveryLoginApi(Request $request) {
-
-    //     $validator = Validator::make($request->all(), [
-    //         'email' => 'required|email',
-    //         'password' => 'required'
-    //     ]);
-    
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'errors' => $validator->errors()
-    //         ], 422);
-    //     }
-    
-    //     $delivery = DeliveryBoy::where('email', $request->email)
-    //         ->where('role', 'delivery_boy')
-    //         ->first();
-    
-    //     if (!$delivery) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => 'No Delivery boy account found with this email'
-    //         ], 404);
-    //     }
-    
-    //     if (!Hash::check($request->password, $delivery->password)) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => 'Invalid credentials'
-    //         ], 401);
-    //     }
-    
-    //     $token = $delivery->createToken('deliveryToken', ['delivery-access'])->accessToken;
-    
-    //     return response()->json([
-    //         'status' => true,
-    //         'message' => 'delivery login successful',
-    //         'token' => $token,
-    //         'data' => [
-    //             'id' => $delivery->id,
-    //             'name' => $delivery->name,
-    //             'email' => $delivery->email,
-    //         ]
-    //     ], 200);
-
-        
-    // }
-
-    // public function deliveryLoginApi(Request $request) {
-    //     $validator = Validator::make($request->all(), [
-    //         'email' => 'required|email',
-    //         'password' => 'required'
-    //     ]);
-    
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'errors' => $validator->errors()
-    //         ], 422);
-    //     }
-    
-    //     $delivery = DeliveryBoy::where('email', $request->email)
-    //         ->where('role', 'delivery_boy')
-    //         ->first();
-    
-    //     if (!$delivery) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => 'No Delivery boy account found with this email'
-    //         ], 404);
-    //     }
-    
-    //     if (!Hash::check($request->password, $delivery->password)) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => 'Invalid credentials'
-    //         ], 401);
-    //     }
-    
-    //     // Revoke all existing tokens
-    //     $delivery->tokens()->delete();
-    
-    //     // Create new token with specific scope
-    //     $token = $delivery->createToken('deliveryToken', ['delivery-access'])->accessToken;
-    
-    //     return response()->json([
-    //         'status' => true,
-    //         'message' => 'Delivery login successful',
-    //         'token' => $token,
-    //         'data' => [
-    //             'id' => $delivery->id,
-    //             'name' => $delivery->name,
-    //             'email' => $delivery->email,
-    //         ]
-    //     ], 200);
-    // }
-
-
-
-    // public function deliveryLoginApi(Request $request)
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'email' => 'required|email',
-    //         'password' => 'required'
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'errors' => $validator->errors()
-    //         ], 422);
-    //     }
-
-    //     $delivery = DeliveryBoy::where('email', $request->email)
-    //         ->where('role', 'delivery_boy')
-    //         ->first();
-
-    //     if (!$delivery) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => 'No Delivery boy account found with this email'
-    //         ], 404);
-    //     }
-
-    //     if (!Hash::check($request->password, $delivery->password)) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => 'Invalid credentials'
-    //         ], 401);
-    //     }
-
-    //     // Revoke any existing tokens
-    //     $delivery->tokens()->delete();
-
-    //     // Create new token with delivery-access scope
-    //     $token = $delivery->createToken('DeliveryAccess', ['delivery-access'])->accessToken;
-
-    //     return response()->json([
-    //         'status' => true,
-    //         'message' => 'Delivery login successful',
-    //         'token' => $token,
-    //         'data' => [
-    //             'id' => $delivery->id,
-    //             'name' => $delivery->name,
-    //             'email' => $delivery->email,
-    //         ]
-    //     ], 200);
-    // }
 
 
     public function deliveryLoginApi(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+{
+    // Validate request data
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email',
+        'password' => 'required'
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        $delivery = DeliveryBoy::where('email', $request->email)
-            ->where('role', 'delivery_boy')
-            ->first();
-
-        if (!$delivery) {
-            return response()->json([
-                'status' => false,
-                'message' => 'No delivery boy account found with this email'
-            ], 404);
-        }
-
-        if (!Hash::check($request->password, $delivery->password)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Invalid credentials'
-            ], 401);
-        }
-
-        // Create a simple token without scopes
-        $token = $delivery->createToken('DeliveryAccess')->accessToken;
-
+    if ($validator->fails()) {
         return response()->json([
-            'status' => true,
-            'message' => 'Delivery login successful',
-            'token' => $token,
-            'user' => [
-                'id' => $delivery->id,
-                'name' => $delivery->name,
-                'email' => $delivery->email,
-                'role' => $delivery->role
-            ]
-        ], 200);
+            'status' => false,
+            'errors' => $validator->errors()
+        ], 422);
     }
 
+    // Find delivery boy with role check
+    $delivery = DeliveryBoy::where('email', $request->email)
+        ->where('role', 'delivery_boy')
+        ->first();
+
+    if (!$delivery) {
+        return response()->json([
+            'status' => false,
+            'message' => 'No delivery boy account found with this email'
+        ], 404);
+    }
+
+    // Verify password
+    if (!Hash::check($request->password, $delivery->password)) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Invalid credentials'
+        ], 401);
+    }
+
+    // Create token with delivery-access scope
+    // $token = $delivery->createToken('DeliveryToken', ['delivery-access'])->accessToken;
+
+     // Revoke all existing tokens
+     $delivery->tokens()->delete();
+
+     // Create new token with delivery-access scope
+     $token = $delivery->createToken('DeliveryToken', ['delivery-access'])->accessToken;
+
+    // Add token creation timestamp and expiration
+    // $tokenMeta = [
+    //     'access_token' => $token,
+    //     'token_type' => 'Bearer',
+    //     'created_at' => now()->toDateTimeString(),
+    //     'expires_at' => now()->addDays(7)->toDateTimeString(), // Adjust expiration as needed
+    // ];
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Delivery login successful',
+        // 'token' => $tokenMeta,
+        'token' => $token,
+        'user' => [
+            'id' => $delivery->id,
+            'name' => $delivery->name,
+            'email' => $delivery->email,
+            'role' => $delivery->role,
+            'permissions' => ['delivery-access']
+        ]
+    ], 200);
+}
     
     public function dashboard()
     {

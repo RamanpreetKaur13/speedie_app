@@ -16,236 +16,72 @@ class RestaurantController extends Controller
 {
 
 
-    // public function restaurantLoginApi(Request $request)
-    // {
-    //     // Handle POST request for login
-    //     if ($request->isMethod('post')) {
-    //         $validator = Validator::make($request->all(), [
-    //             'email' => 'required|email',
-    //             'password' => 'required'
-    //         ], [
-    //             'email.required' => 'Email is required',
-    //             'password.required' => 'Password is required'
-    //         ]);
-
-    //         if ($validator->fails()) {
-    //             return response()->json([
-    //                 'status' => false,
-    //                 'errors' => $validator->errors()
-    //             ], 422);
-    //         }
-
-    //         // Verify restaurant owner by email and role
-    //         $restaurant = Restaurant::where('email', $request->email)
-    //             ->where('role', 'restaurant_owner')
-    //             ->first();
-
-    //         if (!$restaurant) {
-    //             return response()->json([
-    //                 'status' => false,
-    //                 'message' => 'No restaurant account found with this email'
-    //             ], 404);
-    //         }
-
-    //         // Attempt login for restaurant owner using Auth::attempt() without session
-    //         if (Auth::guard('restaurant')->validate([
-    //             'email' => $request->email,
-    //             'password' => $request->password,
-    //             'role' => 'restaurant_owner'
-    //         ])) {
-
-    //             // Generate Passport token
-    //             // $token = $restaurant->createToken('Restaurant Access Token')->accessToken;
-    //             $token = $restaurant->createToken('RestaurantToken')->accessToken;
-
-
-    //             return response()->json([
-    //                 'status' => true,
-    //                 'message' => 'Restaurant login successful',
-    //                 'token' => $token,
-    //                 'data' => [
-    //                     'id' => $restaurant->id,
-    //                     'name' => $restaurant->name,
-    //                     'email' => $restaurant->email,
-    //                     // Add other relevant fields here
-    //                 ]
-    //             ], 201);
-    //         }
-
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => 'Invalid email or password'
-    //         ], 401);
-    //     }
-    // }
-
-
-    //     public function restaurantLoginApi(Request $request)
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'email' => 'required|email',
-    //         'password' => 'required'
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'errors' => $validator->errors()
-    //         ], 422);
-    //     }
-
-    //     // Find the restaurant
-    //     $restaurant = Restaurant::where('email', $request->email)
-    //         ->where('role', 'restaurant_owner')
-    //         ->first();
-
-    //     if (!$restaurant) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => 'No restaurant account found with this email'
-    //         ], 404);
-    //     }
-
-    //     // Check credentials manually
-    //     if (!Hash::check($request->password, $restaurant->password)) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => 'Invalid credentials'
-    //         ], 401);
-    //     }
-
-    //     // Create token with scope
-    //     $token = $restaurant->createToken('RestaurantToken', ['restaurant'])->accessToken;
-
-    //     return response()->json([
-    //         'status' => true,
-    //         'message' => 'Restaurant login successful',
-    //         'token' => $token,
-    //         'data' => [
-    //             'id' => $restaurant->id,
-    //             'name' => $restaurant->name,
-    //             'email' => $restaurant->email,
-    //         ]
-    //     ], 200);
-    // }
-
-    // public function restaurantLoginApi(Request $request)
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'email' => 'required|email',
-    //         'password' => 'required'
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'errors' => $validator->errors()
-    //         ], 422);
-    //     }
-
-    //     // $restaurant = Restaurant::where('email', $request->email)
-    //     //     ->where('role', 'restaurant_owner')
-    //     //     ->first();
-
-    //     // if (!$restaurant) {
-    //     //     return response()->json([
-    //     //         'status' => false,
-    //     //         'message' => 'No restaurant account found with this email'
-    //     //     ], 404);
-    //     // }
-
-    //     // if (!Hash::check($request->password, $restaurant->password)) {
-    //     //     return response()->json([
-    //     //         'status' => false,
-    //     //         'message' => 'Invalid credentials'
-    //     //     ], 401);
-    //     // }
-
-    //     // $token = $restaurant->createToken('RestaurantToken', ['restaurant-access'])->accessToken;
-
-    //     // return response()->json([
-    //     //     'status' => true,
-    //     //     'message' => 'Restaurant login successful',
-    //     //     'token' => $token,
-    //     //     'data' => [
-    //     //         'id' => $restaurant->id,
-    //     //         'name' => $restaurant->name,
-    //     //         'email' => $restaurant->email,
-    //     //     ]
-    //     // ], 200);
-
-    //     $restaurant = Restaurant::where('email', $request->email)
-    //         ->where('role', 'restaurant_owner')
-    //         ->first();
-
-    //     if (!$restaurant || !Hash::check($request->password, $restaurant->password)) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => 'Invalid credentials'
-    //         ], 401);
-    //     }
-
-    //     // Revoke existing tokens
-    //     $restaurant->tokens()->delete();
-
-    //     // Create new token with restaurant-access scope only
-    //     $token = $restaurant->createToken('RestaurantAccess', ['restaurant-access'])->accessToken;
-
-    //     return response()->json([
-    //         'status' => true,
-    //         'message' => 'Login successful',
-    //         'token' => $token,
-    //         'data' => $restaurant->only(['id', 'name', 'email'])
-    //     ]);
-    // }
-
     public function restaurantLoginApi(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+{
+    // Validate request data
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email',
+        'password' => 'required'
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        $restaurant = Restaurant::where('email', $request->email)
-            ->where('role', 'restaurant_owner')
-            ->first();
-
-        if (!$restaurant) {
-            return response()->json([
-                'status' => false,
-                'message' => 'No restaurant boy account found with this email'
-            ], 404);
-        }
-
-        if (!Hash::check($request->password, $restaurant->password)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Invalid credentials'
-            ], 401);
-        }
-
-        // Create a simple token without scopes
-        $token = $restaurant->createToken('restaurantAccess')->accessToken;
-
+    if ($validator->fails()) {
         return response()->json([
-            'status' => true,
-            'message' => 'restaurant login successful',
-            'token' => $token,
-            'user' => [
-                'id' => $restaurant->id,
-                'name' => $restaurant->name,
-                'email' => $restaurant->email,
-                'role' => $restaurant->role
-            ]
-        ], 200);
+            'status' => false,
+            'errors' => $validator->errors()
+        ], 422);
     }
+
+    // Find restaurant with role check
+    $restaurant = Restaurant::where('email', $request->email)
+        ->where('role', 'restaurant_owner')
+        ->first();
+
+    if (!$restaurant) {
+        return response()->json([
+            'status' => false,
+            'message' => 'No restaurant owner account found with this email'
+        ], 404);
+    }
+
+    // Verify password
+    if (!Hash::check($request->password, $restaurant->password)) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Invalid credentials'
+        ], 401);
+    }
+
+    // Revoke all existing tokens
+    $restaurant->tokens()->delete();
+
+    // Create token with restaurant-access scope
+    // $token = $restaurant->createToken('RestaurantToken', ['restaurant-access'])->accessToken;
+    // Create new token with restaurant-access scope
+    $token = $restaurant->createToken('RestaurantToken', ['restaurant-access'])->accessToken;
+    
+
+    // Add token creation timestamp and expiration
+    // $tokenMeta = [
+    //     'access_token' => $token,
+    //     'token_type' => 'Bearer',
+    //     'created_at' => now()->toDateTimeString(),
+    //     'expires_at' => now()->addDays(7)->toDateTimeString(), // Adjust expiration as needed
+    // ];
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Restaurant login successful',
+        // 'token' => $tokenMeta,
+        'token' => $token,
+        'user' => [
+            'id' => $restaurant->id,
+            'name' => $restaurant->name,
+            'email' => $restaurant->email,
+            'role' => $restaurant->role,
+            'permissions' => ['restaurant-access']
+        ]
+    ], 200);
+}
 
     public function dashboard()
     {

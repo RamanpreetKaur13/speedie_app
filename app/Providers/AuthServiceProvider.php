@@ -45,14 +45,12 @@ class AuthServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Define available token scopes
         Passport::tokensCan([
             'delivery-access' => 'Delivery Boy Access',
             'restaurant-access' => 'Restaurant Owner Access',
-            'admin' => 'Administrator Access',
-            'customer' => 'Customer Access',
+            'admin-access' => 'Administrator Access',
+            'customer-access' => 'Customer Access',
         ]);
-
-        // Important: Remove setDefaultScope if you have it
-        // Passport::setDefaultScope(['delivery-access']);
     }
 }
