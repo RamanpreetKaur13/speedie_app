@@ -58,8 +58,8 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboards -->
-        <li class="menu-item @if (Route::currentRouteName() == 'admin.dashboard') active @endif">
-            <a href="{{ route('admin.dashboard') }}" class="menu-link  @if (Route::currentRouteName() == 'admin.dashboard') active @endif">
+        <li class="menu-item @if (Route::currentRouteName() == 'restaurant.dashboard') active @endif">
+            <a href="{{ route('restaurant.dashboard') }}" class="menu-link  @if (Route::currentRouteName() == 'restaurant.dashboard') active @endif">
                 <i class="menu-icon tf-icons bx bx-home-smile"></i>
                 <div class="text-truncate" data-i18n="Boxicons">Dashboard</div>
             </a>
@@ -114,25 +114,164 @@
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
-                <div class="text-truncate" data-i18n="Layouts">User Management</div>
+                <div class="text-truncate" data-i18n="Layouts">Menu Management</div>
+            </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ route('restaurant.food-categories.index') }}" class="menu-link">
+                        <div class="text-truncate" data-i18n="Without menu">Food Categories</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="layouts-without-navbar.html" class="menu-link">
+                        <div class="text-truncate" data-i18n="Without navbar">Food Items</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="layouts-fluid.html" class="menu-link">
+                        <div class="text-truncate" data-i18n="Fluid">Menu status</div>
+                    </a>
+                </li>
+
+                <li class="menu-item">
+                    <a href="layouts-fluid.html" class="menu-link">
+                        <div class="text-truncate" data-i18n="Fluid">Stock Management</div>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+
+
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div class="text-truncate" data-i18n="Layouts">Order Management</div>
             </a>
 
             <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="{{ route('admin.restaurants.index') }}" class="menu-link">
-                        <div class="text-truncate" data-i18n="Without menu">Restaurants</div>
+                        <div class="text-truncate" data-i18n="Without menu">Live Orders</div>
                     </a>
                 </li>
                 <li class="menu-item">
                     <a href="layouts-without-navbar.html" class="menu-link">
-                        <div class="text-truncate" data-i18n="Without navbar">Delivery</div>
+                        <div class="text-truncate" data-i18n="Without navbar">Order History</div>
                     </a>
                 </li>
                 <li class="menu-item">
                     <a href="layouts-fluid.html" class="menu-link">
-                        <div class="text-truncate" data-i18n="Fluid">Customer</div>
+                        <div class="text-truncate" data-i18n="Fluid">Order updates</div>
                     </a>
                 </li>
+
+                <li class="menu-item">
+                    <a href="layouts-fluid.html" class="menu-link">
+                        <div class="text-truncate" data-i18n="Fluid">Customer Support</div>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+
+
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div class="text-truncate" data-i18n="Layouts">Financial Management</div>
+            </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ route('admin.restaurants.index') }}" class="menu-link">
+                        <div class="text-truncate" data-i18n="Without menu">Daily Earning</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="layouts-without-navbar.html" class="menu-link">
+                        <div class="text-truncate" data-i18n="Without navbar">Payment History</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="layouts-fluid.html" class="menu-link">
+                        <div class="text-truncate" data-i18n="Fluid">Settlement Status</div>
+                    </a>
+                </li>
+
+                <li class="menu-item">
+                    <a href="layouts-fluid.html" class="menu-link">
+                        <div class="text-truncate" data-i18n="Fluid">Commision Report</div>
+                    </a>
+                </li>
+
+
+            </ul>
+        </li>
+
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div class="text-truncate" data-i18n="Layouts">Reports & Analytics Management</div>
+            </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ route('admin.restaurants.index') }}" class="menu-link">
+                        <div class="text-truncate" data-i18n="Without menu">Sales</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="layouts-without-navbar.html" class="menu-link">
+                        <div class="text-truncate" data-i18n="Without navbar">Popular Items</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="layouts-fluid.html" class="menu-link">
+                        <div class="text-truncate" data-i18n="Fluid">Customer Reviews</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="layouts-fluid.html" class="menu-link">
+                        <div class="text-truncate" data-i18n="Fluid">Performance Stats</div>
+                    </a>
+                </li>
+
+
+            </ul>
+        </li>
+
+
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div class="text-truncate" data-i18n="Layouts">Profile Management</div>
+            </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ route('admin.restaurants.index') }}" class="menu-link">
+                        <div class="text-truncate" data-i18n="Without menu">Basic Info</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="layouts-without-navbar.html" class="menu-link">
+                        <div class="text-truncate" data-i18n="Without navbar">Opening Hours</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="layouts-fluid.html" class="menu-link">
+                        <div class="text-truncate" data-i18n="Fluid">Delivery Settings</div>
+                    </a>
+                </li>
+
+                <li class="menu-item">
+                    <a href="layouts-fluid.html" class="menu-link">
+                        <div class="text-truncate" data-i18n="Fluid">Bank Details </div>
+                    </a>
+                </li>
+
 
             </ul>
         </li>

@@ -8,7 +8,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Dashboard | speedie app</title>
+    <title>Restaurant | speedie app</title>
 
     <meta name="description" content="" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -52,14 +52,14 @@
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <!-- Menu -->
-            @include('admin.layout.sidebar')
+            @include('restaurantOwner.layout.sidebar')
             <!-- / Menu -->
 
             <!-- Layout container -->
             <div class="layout-page">
                 <!-- Navbar -->
 
-                @include('admin.layout.header')
+                @include('restaurantOwner.layout.header')
 
                 <!-- / Navbar -->
 
@@ -73,7 +73,7 @@
 
                     <!-- Footer -->
 
-                    @include('admin.layout.footer')
+                    @include('restaurantOwner.layout.footer')
                     <!-- / Footer -->
 
                     <div class="content-backdrop fade"></div>

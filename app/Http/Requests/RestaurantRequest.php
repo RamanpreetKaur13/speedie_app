@@ -50,6 +50,8 @@ class RestaurantRequest extends FormRequest
             'bank_holder_name' => 'nullable',
             'ifsc_code' => 'nullable',
             'bank_account_number' => 'nullable',
+            'type' => 'nullable',
+            'priority' => 'nullable',
         ];
 
          // Modify unique validation for update

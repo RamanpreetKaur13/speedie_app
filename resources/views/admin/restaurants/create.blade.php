@@ -49,23 +49,44 @@
                                         <input type="text" class="form-control" id="speciality" placeholder="speciality"
                                             name="speciality" value="{{ old('speciality') }}" />
                                     </div>
+                                    @error('speciality')
+                                    <span class="text-danger"> {{ $message }}</span>
+                                @enderror
                                 </div>
                                 <div class="form-group col-6">
                                     <div class="mb-6">
                                         <label class="form-label" for="type">Type</label>
                                         <select name="type" id="type" class="form-control">
-                                            <option value="active"  @if($restaurant->type ==  'active') selected @endif>Active</option>
-                                            {{-- <option value="active"  @if($restaurant->type ==  'active') selected @endif>Active</option> --}}
-                                            <option value="inactive"  @if($restaurant->type ==  'inactive') selected @endif>Inactive</option>
-                                            <option value="block"  @if($restaurant->type ==  'block') selected @endif>Block</option>
+                                            <option value="subscription_based">Type1</option>
+                                            {{-- <option value="active"  @if ($restaurant->type == 'active') selected @endif>Active</option> --}}
+                                            <option value="self">Type 2</option>
                                         </select>
 
-                                        @error('logo')
-                                        <span class="text-danger"> {{ $message }}</span>
-                                    @enderror
+                                        @error('type')
+                                            <span class="text-danger"> {{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <div class="mb-6">
+                                        <label class="form-label" for="priority">Priority</label>
+
+                                            <select name="priority" id="priority" class="form-control">
+                                                <option value="high">high</option>
+                                                <option value="medium">medium</option>
+                                                <option value="low">low</option>
+                                            </select>
+                                    </div>
+                                    @error('priority')
+                                            <span class="text-danger"> {{ $message }}</span>
+                                        @enderror
+                                </div>
+
+                            </div>
+
 
                             <hr>
 
@@ -486,7 +507,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                
+
                             </div>
 
 

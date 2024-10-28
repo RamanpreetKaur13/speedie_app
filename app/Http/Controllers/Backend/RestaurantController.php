@@ -17,6 +17,7 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class RestaurantController extends Controller
 {
@@ -28,6 +29,7 @@ class RestaurantController extends Controller
     public function restaurantLogin(Request $request)
     {
 
+        // dd($request);
         // If already logged in as restaurant owner, redirect to dashboard
         if (Auth::guard('restaurant')->check()) {
             return redirect()->route('restaurant.dashboard');
@@ -85,12 +87,14 @@ class RestaurantController extends Controller
                 ->withInput($request->except('password'));
         }
 
-        return view('admin.restaurant.auth.login');
+        // return view('admin.restaurant.auth.login');
+        return view('restaurantOwner.login');
     }
 
     //dashboard
     public function dashboard(){
-        return view('admin.restaurant.dashboard');
+        // return view('admin.restaurant.dashboard');
+        return view('restaurantOwner.dashboard');
     }
 
     public function logout(Request $request)
@@ -107,7 +111,7 @@ class RestaurantController extends Controller
     public function index()
     {
         $restaurants = Restaurant::all();
-        return view('admin.restaurant.index', compact('restaurants'));
+        return view('admin.restaurants.index', compact('restaurants'));
     }
 
     /**
@@ -115,7 +119,7 @@ class RestaurantController extends Controller
      */
     public function create()
     {
-        return view('admin.restaurant.create');
+        return view('admin.restaurants.create');
     }
 
 
@@ -168,6 +172,8 @@ class RestaurantController extends Controller
                 'bank_holder_name' => $request->bank_holder_name,
                 'ifsc_code' => $request->ifsc_code,
                 'bank_account_number' => $request->bank_account_number,
+                'type' => $request->type,
+                'priority' => $request->priority,
 
                 // 'logo' => $logoFilename,
                 // 'restaurant_images' => $restaurantImage,
@@ -228,7 +234,7 @@ class RestaurantController extends Controller
     }
 
 
-    
+
     /**
      * Display the specified resource.
      */
@@ -243,7 +249,7 @@ class RestaurantController extends Controller
     public function edit(string $id)
     {
         $restaurant = Restaurant::find($id);
-        return view('admin.restaurant.edit', compact('restaurant'));
+        return view('admin.restaurants.edit', compact('restaurant'));
     }
 
     /**
@@ -333,8 +339,48 @@ class RestaurantController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    // public function destroy(string $id)
+    // {
+    //     try {
+    //         if ($id) {
+    //             $get_restaurant  =  Restaurant::whereId($id)->first();
+    //             if ($get_restaurant) {
+    //                 delete_image($get_restaurant->featured_image, 'restaurants/featured');
+    //             }
+    //             $delete_record = $get_restaurant->delete();
+    //             if ( $delete_record) {
+    //                 return redirect()->back()->withInput()->with('error', 'Failed to delete restaurant: ');
+    //             }
+
+
+    //         }
+    //     } catch (\Exception $e) {
+    //         return redirect()->back()->withInput()->with('error', 'Failed to delete restaurant: '.$e->getMessage());
+    //     }
+
+
+    // }
+
     public function destroy(string $id)
-    {
-        //
+{
+    try {
+        // Attempt to find the restaurant by ID
+        $restaurant = Restaurant::findOrFail($id);
+
+        // Check if there is a featured image and delete it
+        if ($restaurant->featured_image) {
+            delete_image($restaurant->featured_image, 'restaurants/featured');
+        }
+
+        // Soft delete the restaurant record
+        $restaurant->delete();
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Restaurant deleted successfully.');
+    } catch (ModelNotFoundException $e) {
+        return redirect()->back()->withInput()->with('error', 'Restaurant not found.');
+    } catch (\Exception $e) {
+        return redirect()->back()->withInput()->with('error', 'Failed to delete restaurant: ' . $e->getMessage());
     }
+}
 }

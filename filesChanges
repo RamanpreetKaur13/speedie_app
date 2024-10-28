@@ -1,0 +1,33 @@
+# total 31
+
+#     modified:   app/Http/Controllers/Backend/RestaurantController.php
+#         modified:   app/Http/Requests/RestaurantRequest.php
+#         modified:   app/Models/Restaurant.php
+#         modified:   database/migrations/2024_10_21_175036_create_restaurants_table.php
+#         modified:   resources/views/admin/layout/layout.blade.php
+#         modified:   resources/views/admin/layout/sidebar.blade.php
+#         deleted:    resources/views/admin/restaurant/auth/login.blade.php
+#         deleted:    resources/views/admin/restaurant/create.blade.php
+#         deleted:    resources/views/admin/restaurant/dashboard.blade.php
+#         deleted:    resources/views/admin/restaurant/edit.blade.php
+#         deleted:    resources/views/admin/restaurant/index.blade.php
+#         modified:   resources/views/alert_messages.blade.php
+#         modified:   routes/web.php
+#         modified:   speedie_app.sql
+
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#         app/Http/Controllers/Backend/FoodCategoryController.php
+#         app/Models/FoodCategory.php
+#         database/migrations/2024_10_28_183644_create_food_categories_table.php
+#         filesChanges
+#         public/backend/
+#         resources/views/admin/restaurants/
+#         resources/views/restaurantOwner/
+
+# restaurant passwords
+
+# //email:burger@gmail.com
+# //password:Oas6d-BnlwZk
+# email:pizza@gmail.com
+# password:*J!$(rQ2UzwT

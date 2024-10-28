@@ -4,6 +4,7 @@
 
     <div class="container-xxl flex-grow-1 container-p-y">
         <!-- Hoverable Table rows -->
+        @include('alert_messages')
         <div class="card">
             {{-- <div class="card-header d-flex justify-content-between">
                 <h5>Restaurants</h5>
@@ -11,7 +12,7 @@
                     <button class="btn btn-primary"> Add Restaurant</button>
                 </a>
                 </div> --}}
-                @include('alert_messages')
+
                 @if (session('email') && session('password'))
                 <div class="alert alert-info alert-dismissible fade show" role="alert">
                     <h4 class="alert-heading">Restaurant Owner Credentials</h4>
@@ -79,9 +80,12 @@
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="{{ route('admin.restaurants.edit', $restaurant->id) }}"><i
                                                         class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                <a class="dropdown-item" href="javascript:void(0);"><i
+                                                <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('{{ route('admin.restaurants.destroy', $restaurant->id) }}')"><i
                                                         class="bx bx-trash me-1"></i>
                                                     Delete</a>
+                                                    {{-- <button class="btn btn-danger" onclick="confirmDelete('{{ route('admin.restaurants.destroy', $restaurant->id) }}')">
+                                                        Delete
+                                                    </button> --}}
                                             </div>
                                         </div>
                                     </td>

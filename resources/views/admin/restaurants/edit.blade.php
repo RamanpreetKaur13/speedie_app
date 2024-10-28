@@ -17,7 +17,7 @@
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
-                            <input type="text" value="{{ $restaurant->id }}" name="id">
+                            <input type="hidden" value="{{ $restaurant->id }}" name="id">
                             <h4>1. Basic Information:</h4>
                             <div class="row">
                                 <div class="form-group col-6">
@@ -57,6 +57,37 @@
 
                                 <div class="form-group col-6">
                                     <div class="mb-6">
+                                        <label class="form-label" for="type">Type</label>
+                                        <select name="type" id="type" class="form-control">
+                                            <option value="subscription_based">Type1</option>
+                                            {{-- <option value="active"  @if ($restaurant->type == 'active') selected @endif>Active</option> --}}
+                                            <option value="self">Type 2</option>
+                                        </select>
+
+                                        @error('type')
+                                            <span class="text-danger"> {{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <div class="mb-6">
+                                        <label class="form-label" for="priority">Priority</label>
+                                            <select name="priority" id="priority" class="form-control">
+                                                <option value="high">high</option>
+                                                <option value="medium">medium</option>
+                                                <option value="low">low</option>
+                                            </select>
+                                    </div>
+                                    @error('priority')
+                                            <span class="text-danger"> {{ $message }}</span>
+                                        @enderror
+                                </div>
+
+                                <div class="form-group col-6">
+                                    <div class="mb-6">
                                         <label class="form-label" for="status">Status</label>
                                         <select name="status" id="status" class="form-control">
                                             <option value="active"  @if($restaurant->status ==  'active') selected @endif>Active</option>
@@ -66,16 +97,6 @@
 
                                     </div>
                                 </div>
-
-                                {{-- <div class="form-group col-6">
-                                    <div class="mb-6">
-                                        <label class="form-label" for="logo">Logo</label>
-                                        <input type="file" class="form-control" id="logo" name="logo" />
-                                        @error('logo')
-                                        <span class="text-danger"> {{ $message }}</span>
-                                    @enderror
-                                    </div>
-                                </div> --}}
                             </div>
 
                             <hr>
@@ -389,7 +410,7 @@
                                         <select name="delivery_on_off" id="delivery_on_off" class="form-control">
                                             <option value="on"  @if ($restaurant->delivery_on_off == 'on') selected @endif>On</option>
                                             <option value="off"  @if ($restaurant->delivery_on_off == 'off') selected @endif>Off</option>
-                                           
+
                                         </select>
 
 
@@ -458,8 +479,8 @@
                                 </div>
                                 <div class="form-group col-6">
                                     <div class="mb-6">
-                                       
-                                        <label class="form-label" for="fssai_number">Fssai 
+
+                                        <label class="form-label" for="fssai_number">Fssai
                                             Number/Code</label>
                                         <input type="text" class="form-control" id="fssai_number"
                                             placeholder="Enter fssai number" name="fssai_number"
@@ -511,7 +532,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                
+
                             </div>
 
 
