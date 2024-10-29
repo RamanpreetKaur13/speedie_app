@@ -16,3 +16,7 @@
 #         app/Models/MenuItem.php
 #         database/migrations/2024_10_29_175559_create_menu_items_table.php
 #         resources/views/restaurantOwner/menuItem/
+
+# Optimizes get funciton for 
+    # modified:   app/Http/Controllers/Api/FoodCategoryApiController.php
+    #     modified:   app/Http/Controllers/Api/MenuItemApiController.php
