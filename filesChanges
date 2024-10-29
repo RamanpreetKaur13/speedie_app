@@ -1,33 +1,18 @@
-# total 31
-
-#     modified:   app/Http/Controllers/Backend/RestaurantController.php
-#         modified:   app/Http/Requests/RestaurantRequest.php
+# # 30-10-2024 total 16 files changes : Food category done in api and web both, but menu item is done on only web and wokring in api
+# modified:   app/Http/Controllers/Backend/FoodCategoryController.php
+#         modified:   app/Models/FoodCategory.php
 #         modified:   app/Models/Restaurant.php
-#         modified:   database/migrations/2024_10_21_175036_create_restaurants_table.php
-#         modified:   resources/views/admin/layout/layout.blade.php
-#         modified:   resources/views/admin/layout/sidebar.blade.php
-#         deleted:    resources/views/admin/restaurant/auth/login.blade.php
-#         deleted:    resources/views/admin/restaurant/create.blade.php
-#         deleted:    resources/views/admin/restaurant/dashboard.blade.php
-#         deleted:    resources/views/admin/restaurant/edit.blade.php
-#         deleted:    resources/views/admin/restaurant/index.blade.php
-#         modified:   resources/views/alert_messages.blade.php
+#         modified:   app/helper.php
+#         modified:   resources/views/restaurantOwner/layout/sidebar.blade.php
+#         modified:   routes/api.php
 #         modified:   routes/web.php
-#         modified:   speedie_app.sql
 
 # Untracked files:
 #   (use "git add <file>..." to include in what will be committed)
-#         app/Http/Controllers/Backend/FoodCategoryController.php
-#         app/Models/FoodCategory.php
-#         database/migrations/2024_10_28_183644_create_food_categories_table.php
-#         filesChanges
-#         public/backend/
-#         resources/views/admin/restaurants/
-#         resources/views/restaurantOwner/
-
-# restaurant passwords
-
-# //email:burger@gmail.com
-# //password:Oas6d-BnlwZk
-# email:pizza@gmail.com
-# password:*J!$(rQ2UzwT
+#         app/Http/Controllers/Api/FoodCategoryApiController.php
+#         app/Http/Controllers/Api/MenuItemApiController.php
+#         app/Http/Controllers/Backend/MenuItemController.php
+#         app/Http/Requests/MenuItemRequest.php
+#         app/Models/MenuItem.php
+#         database/migrations/2024_10_29_175559_create_menu_items_table.php
+#         resources/views/restaurantOwner/menuItem/
