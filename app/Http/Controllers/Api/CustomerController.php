@@ -128,9 +128,26 @@ class CustomerController extends Controller
 
             // Login user
             Auth::login($user);
+             // Revoke all existing tokens
+     $user->tokens()->delete();
 
-            // Return success response with redirect URL
-            return api_success('Login successful'  );
+     // Create new token with customer-access scope
+     $token = $user->createToken('CustomerToken', ['customer-access'])->accessToken;
+
+     return response()->json([
+        'status' => true,
+        'message' => 'customer login successful',
+        // 'token' => $tokenMeta,
+        'token' => $token,
+        'user' => [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+            'permissions' => ['customer-access']
+        ]
+    ], 200);
+            // return api_success('Login successful'  );
 
         } catch (\Exception $e) {
             return api_exception($e, 'Error verifying OTP');
@@ -140,7 +157,8 @@ class CustomerController extends Controller
 
     public function dashboard(Request $request)
     {
-        return new UserResource($request->user());
+        return 'kdfkdlfkldkfld';
+        // return new UserResource($request->user());
     }
     public function profile(Request $request)
     {

@@ -29,3 +29,9 @@
 # Password: hoN=DAF&9^o*
 
 # Note: This password will only be shown once.
+
+
+#  RuntimeException
+# Personal access client not found. Please create one.
+# run this then
+# php artisan passport:client --personal
