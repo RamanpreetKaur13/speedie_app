@@ -45,13 +45,16 @@ class RestaurantRequest extends FormRequest
             'fssai_number' => 'nullable',
             'delivery_fee' => 'nullable',
             'delivery_time' => 'nullable',
-            'delivery_on_off' => 'nullable',
+            // 'delivery_on_off' => 'nullable',
             'average_cost_for_per_person' => 'nullable',
             'bank_holder_name' => 'nullable',
             'ifsc_code' => 'nullable',
             'bank_account_number' => 'nullable',
             'type' => 'nullable',
             'priority' => 'nullable',
+            'pureVeg' => 'nullable',
+            'deliveryIs' => 'nullable',
+
         ];
 
          // Modify unique validation for update

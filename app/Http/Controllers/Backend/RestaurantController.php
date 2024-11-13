@@ -165,7 +165,7 @@ class RestaurantController extends Controller
                 'days_of_operation' => $request->days_of_operation,
                 'delivery_fee' => $request->delivery_fee,
                 'delivery_time' => $request->delivery_time,
-                'delivery_on_off' => $request->delivery_on_off,
+                // 'delivery_on_off' => $request->delivery_on_off,
                 'average_cost_for_per_person' => $request->average_cost_for_per_person,
                 'tax_gst_number' => $request->tax_gst_number,
                 'fssai_number' => $request->fssai_number,
@@ -174,7 +174,8 @@ class RestaurantController extends Controller
                 'bank_account_number' => $request->bank_account_number,
                 'type' => $request->type,
                 'priority' => $request->priority,
-
+                'pureVeg' => $request->pureVeg,
+                'deliveryIs' => $request->deliveryIs,
                 // 'logo' => $logoFilename,
                 // 'restaurant_images' => $restaurantImage,
                 'featured_image' => $featuredImage,

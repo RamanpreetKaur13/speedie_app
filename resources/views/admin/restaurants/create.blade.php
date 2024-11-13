@@ -85,8 +85,42 @@
                                         @enderror
                                 </div>
 
+                                <div class="form-group col-6">
+                                    <div class="mb-6">
+                                        <label class="form-label" for="pureVeg">Pure Veg</label>
+
+                                            <select name="pureVeg" id="pureVeg" class="form-control">
+                                                <option value="yes">Yes</option>
+                                                <option value="no">No</option>
+                                            </select>
+                                    </div>
+                                    @error('pureVeg')
+                                            <span class="text-danger"> {{ $message }}</span>
+                                        @enderror
+                                </div>
+
+
                             </div>
 
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <div class="mb-6">
+                                        <label class="form-label" for="deliveryIs">Delivery Is</label>
+
+                                            <select name="deliveryIs" id="deliveryIs" class="form-control">
+                                                <option value="yes">Yes</option>
+                                                <option value="no">No</option>
+                                            </select>
+                                    </div>
+                                    @error('deliveryIs')
+                                            <span class="text-danger"> {{ $message }}</span>
+                                        @enderror
+                                </div>
+
+
+
+
+                            </div>
 
                             <hr>
 
@@ -388,12 +422,11 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="form-group col-6">
+                                {{-- <div class="form-group col-6">
                                     <div class="mb-6">
                                         <label class="form-label" for="delivery_on_off">Delivery On/Off</label>
 
                                         <select name="delivery_on_off" id="delivery_on_off" class="form-control">
-                                            {{-- <option value="on"  @if ($restaurant->delivery_on_off == 'on') selected @endif>On</option> --}}
                                             <option value="on">On</option>
                                             <option value="off">Off</option>
                                         </select>
@@ -403,7 +436,7 @@
                                             <span class="text-danger"> {{ $message }}</span>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> --}}
 
 
                             </div>
