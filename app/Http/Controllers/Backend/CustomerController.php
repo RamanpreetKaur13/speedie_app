@@ -162,6 +162,6 @@ class CustomerController extends Controller
         return 'login';
     }
     public function dashboard(){
-        return 'customer';
+        return view('customer.dashboard');
     }
 }
