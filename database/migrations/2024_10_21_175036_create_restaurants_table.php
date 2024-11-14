@@ -21,7 +21,6 @@ return new class extends Migration
             $table->enum('priority', ['high', 'medium' , 'low'])->nullable();                     // Cuisine speciality
             $table->enum('pureVeg', ['yes', 'no'])->nullable();                     // Cuisine speciality
             $table->enum('deliveryIs', ['yes', 'no'])->nullable();                     // Cuisine speciality
-            // $table->string('category');                     // Cuisine Category
             $table->string('logo')->nullable();             // Restaurant Logo
             $table->text('address');                      // Restaurant Address
             $table->string('city');                         // City
@@ -42,36 +41,23 @@ return new class extends Migration
             $table->string('owner_name');                   // Owner Name
             $table->string('owner_contact_number');         // Owner Contact Number
             $table->string('owner_email')->unique();        // Owner Email
-            // $table->string('menu_categories')->nullable();  // Menu Categories
-            // $table->string('menu_file')->nullable();        // Menu File (PDF/Image)
-            // $table->string('menu_url')->nullable();         // Menu URL (optional)
             $table->decimal('average_cost_for_per_person', 8, 2)->nullable();  // Average Cost for one
-            // $table->decimal('service_charge', 8, 2)->nullable(); // Service Charge (if any)
-            // $table->string('discounts_or_offers')->nullable();   // Discounts or Offers
-            // $table->string('restaurant_type');              // Restaurant Type (Dine-in/Takeaway/Delivery)
-            // $table->integer('seating_capacity')->nullable();// Seating Capacity (if any)
-            // $table->boolean('accepting_online_orders')->default(true); // Accepting Online Orders
-            // $table->boolean('vegetarian_options')->default(false);     // Vegetarian/Vegan Options Available
-            // $table->boolean('alcohol_served')->default(false);         // Alcohol Served
-            // $table->boolean('halal')->default(false);                  // Halal/Kosher
-            // $table->string('delivery_partner')->nullable();            // Delivery Partner Integration
-            // $table->decimal('min_order_amount', 8, 2)->nullable();     // Minimum Order Amount
             $table->decimal('delivery_fee', 8, 2)->nullable();         // Delivery Fee
             $table->string('delivery_time')->nullable();               // Estimated Delivery Time
             // $table->enum('delivery_on_off', ['on', 'off'])->default('off');
             $table->string('restaurant_images')->nullable();                      // Restaurant Images
             $table->string('featured_image')->nullable();              // Featured Image
-            // $table->json('payment_methods')->nullable();               // Accepted Payment Methods
-            // $table->string('bank_details')->nullable();                // Bank Details (for payouts)
             $table->enum('status', ['active', 'inactive', 'block'])->default('inactive'); // Restaurant Status
             $table->boolean('featured')->default(false);               // Featured Status
             $table->string('tax_gst_number')->nullable();                      // Tax ID/GST Number
-            // $table->string('business_license')->nullable();            // Business License Number
             $table->string('fssai_number')->nullable();            // fssai_number License Number
             $table->string('bank_holder_name')->nullable();
             $table->string('ifsc_code')->nullable();
             $table->string('bank_account_number')->nullable();
-            // $table->text('special_instructions')->nullable();          // Special Instructions (optional)
+            $table->string('subscription_id')->nullable();
+            $table->string('restaurant_subscription_id')->nullable();
+            $table->enum('subscription_active', ['0', '1'])->default(0);
+            $table->string('device_token')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

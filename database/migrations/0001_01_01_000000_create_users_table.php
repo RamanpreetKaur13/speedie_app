@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('customer_id')->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -20,6 +21,9 @@ return new class extends Migration
             $table->string('phone');
             $table->string('altNumber')->nullable();
             $table->text('address')->nullable();
+            $table->decimal('user_latitude', 10, 7)->nullable(); // Geo-Coordinates: Latitude
+            $table->decimal('user_longitude', 10, 7)->nullable();// Geo-Coordinates: Longitude
+
             $table->text('image')->nullable();
             $table->text('gender')->nullable();
             $table->enum('status' , ['active' , 'inactive'])->default('active');
@@ -28,7 +32,7 @@ return new class extends Migration
             $table->string('otp')->nullable();
             $table->timestamp('otp_expire_at')->nullable();
             $table->boolean('is_otp_verified')->default(false);
-
+            $table->string('device_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -21,14 +21,6 @@
     # modified:   app/Http/Controllers/Api/FoodCategoryApiController.php
     #     modified:   app/Http/Controllers/Api/MenuItemApiController.php
 
-# Restaurant Owner Credentials
-# Please share these credentials with the restaurant owner:
-
-# Email: admin@gmail.com
-
-# Password: hoN=DAF&9^o*
-
-# Note: This password will only be shown once.
 
 
 #  RuntimeException
@@ -37,6 +29,11 @@
 # php artisan passport:client --personal
 
 
-# Email: chai@gmail.com
+# Restaurant Owner Credentials
+# Please share these credentials with the restaurant owner:
 
-# Password: zqzd(g2W*V$(
+# Email: burger@gmail.com
+
+# Password: 5u&DMNrllTlc
+
+# Note: This password will only be shown once.
