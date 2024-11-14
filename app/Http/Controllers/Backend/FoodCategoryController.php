@@ -18,15 +18,8 @@ class FoodCategoryController extends Controller
      */
     public function index()
     {
-        // Get the authenticated restaurant
-        $restaurant = Auth::guard('restaurant')->user();
-
-        // Get only food categories belonging to the authenticated restaurant
-        $food_categories = FoodCategory::where('restaurant_id', $restaurant->id)
-            ->with('restaurant')
-            ->get();
-
-        return view('restaurantOwner.foodCategory.index', compact('food_categories'));
+        $food_categories = FoodCategory::get();
+        return view('admin.foodCategory.index', compact('food_categories'));
     }
 
     /**
@@ -34,7 +27,7 @@ class FoodCategoryController extends Controller
      */
     public function create()
     {
-        return view('restaurantOwner.foodCategory.create');
+        return view('admin.foodCategory.create');
     }
 
 
@@ -48,13 +41,13 @@ class FoodCategoryController extends Controller
         ]);
 
         try {
-            $restaurant = Auth::guard('restaurant')->user();
+            // $restaurant = Auth::guard('restaurant')->user();
 
-            if (!$restaurant) {
-                return redirect()->back()
-                    ->with('error', 'Restaurant not found. Please login again.')
-                    ->withInput();
-            }
+            // if (!$restaurant) {
+            //     return redirect()->back()
+            //         ->with('error', 'Restaurant not found. Please login again.')
+            //         ->withInput();
+            // }
             $foodCatImg = null;
             if ($request->hasFile('image')) {
                 try {
@@ -66,11 +59,10 @@ class FoodCategoryController extends Controller
                         ->withInput();
                 }
             }
-            $validated['restaurant_id'] = $restaurant->id;
+            // $validated['restaurant_id'] = $restaurant->id;
             $validated['status'] = 1;
             FoodCategory::create($validated);
-            return redirect()->back()
-                ->with('success', 'Food category created successfully');
+            return redirect()->route('admin.food-categories.index')->with('success', 'Food category created successfully');
         } catch (\Exception $e) {
             // If image was uploaded but record creation failed, remove the image
             if ($foodCatImg) {
@@ -97,14 +89,10 @@ class FoodCategoryController extends Controller
     public function edit(string $id)
     {
         try {
-            $restaurant = Auth::guard('restaurant')->user();
-
-            $category = FoodCategory::where('restaurant_id', $restaurant->id)
-                ->findOrFail($id);
-
-            return view('restaurantOwner.foodCategory.edit', compact('category'));
+            $category = FoodCategory::findOrFail($id);
+            return view('admin.foodCategory.edit', compact('category'));
         } catch (\Exception $e) {
-            return redirect()->route('restaurant.food-categories.index')
+            return redirect()->route('admin.food-categories.index')
                 ->with('error', 'Food category not found');
         }
     }
@@ -121,9 +109,8 @@ class FoodCategoryController extends Controller
         ]);
 
         try {
-            $restaurant = Auth::guard('restaurant')->user();
-            $category = FoodCategory::where('restaurant_id', $restaurant->id)
-                ->findOrFail($id);
+            // $restaurant = Auth::guard('restaurant')->user();
+            $category = FoodCategory::findOrFail($id);
             if ($request->hasFile('image')) {
                 try {
                     // Delete old image if exists
@@ -143,7 +130,7 @@ class FoodCategoryController extends Controller
 
             $category->update($validated);
 
-            return redirect()->route('restaurant.food-categories.index')
+            return redirect()->route('admin.food-categories.index')
                 ->with('success', 'Food category updated successfully');
         } catch (\Exception $e) {
             return redirect()->back()

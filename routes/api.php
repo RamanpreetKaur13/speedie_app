@@ -84,15 +84,18 @@ Route::middleware(['restaurant'])->prefix('restaurant')->group(function () {
     Route::get('/dashboard', [RestaurantController::class, 'dashboard']);
     Route::get('/profile', [RestaurantController::class, 'profile']);
 
+    /* ===========================================================
+						Now these api are  not in use, as food categories are now added by admin 
+	
+
+
     //Menu Management : restaurant/food-categories
     Route::get('/food-categories', [FoodCategoryApiController::class, 'getFoodCategories']);
     Route::post('/store-food-category', [FoodCategoryApiController::class, 'storeFoodCategory']);
-    // Route::put('/update-food-categories/{id}' , [FoodCategoryApiController::class, 'updateFoodCategories'])
-    // ->middleware(\Illuminate\Routing\Middleware\HandlePutFormData::class);;
     Route::get('/edit-food-category/{id}', [FoodCategoryApiController::class, 'editFoodCategory']);
     Route::post('/update-food-category/{id}', [FoodCategoryApiController::class, 'updateFoodCategory']);
     Route::delete('/delete-food-category/{id}', [FoodCategoryApiController::class, 'deleteFoodCategory']);
-
+=========================================================== **/
     // menu-items
     Route::get('/menu-items', [MenuItemApiController::class, 'getMenuItems']);
 });

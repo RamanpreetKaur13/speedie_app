@@ -15,10 +15,10 @@ class FoodCategory extends Model
     /**
      * Get the restaurant that owns the food category.
      */
-    public function restaurant()
-    {
-        return $this->belongsTo(Restaurant::class);
-    }
+    // public function restaurant()
+    // {
+    //     return $this->belongsTo(Restaurant::class);
+    // }
 
     public function menuItems()
     {

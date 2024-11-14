@@ -12,6 +12,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class FoodCategoryApiController extends Controller
 {
+    /* ===========================================================
+						Now this controller is not in use, as food categories are now added by admin 
+	=========================================================== **/
+
     //repeating the restaurant with each Food category record
     // public function getFoodCategories()
     // {

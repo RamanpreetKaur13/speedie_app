@@ -1,4 +1,4 @@
-@extends('restaurantOwner.layout.layout')
+@extends('admin.layout.layout')
 @section('content')
     <!-- Content -->
 
@@ -10,7 +10,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="mb-0">Food Category</h3>
                     {{-- <small class="text-body float-end">Default label</small> --}}
-                    <a class="text-body float-end" href="{{ route('restaurant.food-categories.create') }}">
+                    <a class="text-body float-end" href="{{ route('admin.food-categories.create') }}">
                         <button class="btn btn-primary"> Add Category</button>
                     </a>
                 </div>
@@ -22,7 +22,6 @@
                             <th>S.No. </th>
                             <th>Image</th>
                             <th>Category Name</th>
-                            <th>Restaurant Name</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -36,7 +35,6 @@
                                             src="{{ asset('storage/foodCategory/images/' . $category->image) }}"
                                             alt="" srcset="" width="75px" height="60px"></td>
                                             <td>{{ $category->name }}</td>
-                                    <td>{{ $category->restaurant->name }}</td>
                                     @if ($category->status == 1)
                                         <td><span
                                                 class="badge bg-label-primary me-1">Active</span>
@@ -55,9 +53,9 @@
                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="{{ route('restaurant.food-categories.edit', $category->id) }}"><i
+                                                <a class="dropdown-item" href="{{ route('admin.food-categories.edit', $category->id) }}"><i
                                                         class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('{{ route('restaurant.food-categories.destroy', $category->id) }}')"><i
+                                                <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('{{ route('admin.food-categories.destroy', $category->id) }}')"><i
                                                         class="bx bx-trash me-1"></i>
                                                     Delete</a>
 

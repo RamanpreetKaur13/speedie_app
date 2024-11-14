@@ -38,11 +38,6 @@ Route::middleware('guest:web')->group(function () {
     Route::prefix('user')->name('user.')->controller(CustomerController::class)->group(function () {
         Route::get('/register', 'showRegistrationForm')->name('register');
         Route::post('/user_register', 'user_register')->name('user_register');
-        // Route::post('send-otp',  'sendOTP');
-
-        // Route::get('/login', 'showLoginForm')->name('login');
-        // Route::post('/login', 'login');
-
         Route::get('/login', 'showLoginForm')->name('login');
         Route::post('/send-otp', 'sendOTP')->name('send.otp');
         Route::post('/verify-otp', 'verifyOTPAndLogin')->name('verify.otp');
@@ -56,6 +51,9 @@ Route::middleware(['auth:admin', 'admin'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
         Route::resource('restaurants', RestaurantController::class);
+        // menu managment 
+        Route::resource('food-categories', FoodCategoryController::class);
+        
         Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
     });
 });
@@ -68,7 +66,7 @@ Route::middleware(['auth:restaurant', 'restaurant'])->group(function () {
         Route::post('/logout', [RestaurantController::class, 'logout'])->name('logout');
 
         //Menu Management
-        Route::resource('food-categories', FoodCategoryController::class);
+        // Route::resource('food-categories', FoodCategoryController::class);
         Route::resource('menu-items', MenuItemController::class);
     });
 });

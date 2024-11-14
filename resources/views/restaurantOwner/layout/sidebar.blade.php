@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="index.html" class="app-brand-link">
+        <a href="{{ route('restaurant.dashboard') }}" class="app-brand-link">
             <span class="app-brand-logo demo">
                 <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -48,8 +48,7 @@
             <span class="app-brand-text demo menu-text fw-bold ms-2">Speedie</span>
         </a>
 
-        <a href="javascript:void(0);"
-            class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
             <i class="bx bx-chevron-left bx-sm d-flex align-items-center justify-content-center"></i>
         </a>
     </div>
@@ -59,7 +58,8 @@
     <ul class="menu-inner py-1">
         <!-- Dashboards -->
         <li class="menu-item @if (Route::currentRouteName() == 'restaurant.dashboard') active @endif">
-            <a href="{{ route('restaurant.dashboard') }}" class="menu-link  @if (Route::currentRouteName() == 'restaurant.dashboard') active @endif">
+            <a href="{{ route('restaurant.dashboard') }}"
+                class="menu-link  @if (Route::currentRouteName() == 'restaurant.dashboard') active @endif">
                 <i class="menu-icon tf-icons bx bx-home-smile"></i>
                 <div class="text-truncate" data-i18n="Boxicons">Dashboard</div>
             </a>
@@ -118,13 +118,13 @@
             </a>
 
             <ul class="menu-sub">
-                <li class="menu-item">
+                {{-- <li class="menu-item">
                     <a href="{{ route('restaurant.food-categories.index') }}" class="menu-link">
                         <div class="text-truncate" data-i18n="Without menu">Food Categories</div>
                     </a>
-                </li>
+                </li> --}}
                 <li class="menu-item">
-                    <a href="{{ route('restaurant.menu-items.index')}}" class="menu-link">
+                    <a href="{{ route('restaurant.menu-items.index') }}" class="menu-link">
                         <div class="text-truncate" data-i18n="Without navbar">Food Items</div>
                     </a>
                 </li>
@@ -144,7 +144,7 @@
         </li>
 
 
-        <li class="menu-item">
+        {{-- <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div class="text-truncate" data-i18n="Layouts">Order Management</div>
@@ -174,7 +174,7 @@
                 </li>
 
             </ul>
-        </li>
+        </li> --}}
 
 
         {{-- <li class="menu-item">
@@ -285,7 +285,7 @@
             <a href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/app-email.html"
                 target="_blank" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-envelope"></i>
-                <div class="text-truncate" data-i18n="Email">Email</div>
+                <div class="text-truncate" data-i18n="Email">Order Management</div>
                 <div class="badge rounded-pill bg-label-primary text-uppercase fs-tiny ms-auto">Pro</div>
             </a>
         </li>
